@@ -2,6 +2,8 @@
 This module defines the classes used in the system.
 """
 
+import datetime
+
 class News:
     """
     Defines a News object.
@@ -18,6 +20,7 @@ class News:
         self.published_at = published_at
         self.content = content
         self.score = 0
+        self.date = datetime.datetime.now()
 
     def __str__(self):
         return self.title
