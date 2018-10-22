@@ -3,7 +3,7 @@ This method retrieves news from the internet and parses them as News classes.
 The process for retrieving News uses NewsAPI
 """
 
-from settings import API_KEY
+from settings import API_KEY, SOURCES_PT, DATE_NOW, DATE_BEFORE, SEARCH
 from models import News
 from newsapi import NewsApiClient
 import json
@@ -12,10 +12,10 @@ import json
 newsapi = NewsApiClient(api_key=API_KEY)
 
 # get everything
-all_articles = newsapi.get_everything(q='dengue',
-                                      domains='globo.com,gazetaweb.globo.com,uol.com.br,terra.com.br,tribunadonorte.com.br,r7.com,ebc.com.br,abril.com.br,estadao.com.br,correiobraziliense.com.br',
-                                      from_param='2018-10-20',
-                                      to='2018-10-21',
+all_articles = newsapi.get_everything(q=SEARCH,
+                                      domains=SOURCES_PT,
+                                      from_param=DATE_BEFORE,
+                                      to=DATE_NOW,
                                       language='pt',
                                       sort_by='relevancy')
 

@@ -2,7 +2,7 @@
 This module defines the classes used in the system.
 """
 
-import datetime
+from settings import DATE_NOW
 
 class News:
     """
@@ -20,7 +20,7 @@ class News:
         self.published_at = published_at
         self.content = content
         self.score = 0
-        self.date = datetime.datetime.now()
+        self.date = DATE_NOW
 
     def __str__(self):
         return self.title
