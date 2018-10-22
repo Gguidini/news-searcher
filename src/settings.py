@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 API_KEY = ''
 
-SOURCES_PT = 'globo.com,gazetaweb.globo.com,uol.com.br,terra.com.br,tribunadonorte.com.br,r7.com,ebc.com.br,abril.com.br,estadao.com.br,correiobraziliense.com.br'
+SOURCES_PT = ['globo.com','gazetaweb.globo.com','uol.com.br','terra.com.br','tribunadonorte.com.br','r7.com','ebc.com.br','abril.com.br','estadao.com.br','correiobraziliense.com.br']
 
 TERMS = []
 

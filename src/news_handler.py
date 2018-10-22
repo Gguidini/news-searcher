@@ -13,7 +13,7 @@ newsapi = NewsApiClient(api_key=API_KEY)
 
 # get everything
 all_articles = newsapi.get_everything(q=SEARCH,
-                                      domains=SOURCES_PT,
+                                      domains=','.join(SOURCES_PT),
                                       from_param=DATE_BEFORE,
                                       to=DATE_NOW,
                                       language='pt',
