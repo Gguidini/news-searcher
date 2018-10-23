@@ -3,12 +3,17 @@ This method retrieves news from the internet and parses them as News classes.
 The process for retrieving News uses NewsAPI
 """
 
-from settings import API_KEY, SOURCES_PT, DATE_NOW, DATE_BEFORE, SEARCH
+import json
+from settings import API_KEY, SOURCES_PT, SEARCH
 from models import News
 from newsapi import NewsApiClient
-import json
+from datetime import datetime, timedelta
 
-# Init
+# Defines dates of interest
+DATE_NOW = datetime.strftime(datetime.now() - timedelta(0), '%Y-%m-%d')
+DATE_BEFORE = datetime.strftime(datetime.now() - timedelta(2), '%Y-%m-%d')
+
+# Initialize the API client
 newsapi = NewsApiClient(api_key=API_KEY)
 
 # get everything

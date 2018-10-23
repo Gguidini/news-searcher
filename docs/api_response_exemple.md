@@ -1,3 +1,19 @@
+# The NewsAPI
+
+News API is a simple and easy-to-use API that returns JSON metadata for headlines and articles live all over the web right now.
+
+We will be using the News API in this project to search for the News we need.
+For more information visit the [News API](https://newsapi.org/) website.
+
+# The newsapi-python
+
+NewsAPI has a simple python library to make it easier to use. We are using such library in our project. 
+For more information visit the [newsapi-python](https://newsapi.org/docs/client-libraries/python) webpage.
+
+# Result Example
+
+The result of a query is a json object. An example of such object is:
+
 {
     "articles": [
         {

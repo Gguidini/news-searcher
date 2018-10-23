@@ -2,7 +2,7 @@
 This module defines the classes used in the system.
 """
 
-from settings import DATE_NOW
+from datetime import datetime
 
 class News:
     """
@@ -20,7 +20,7 @@ class News:
         self.published_at = published_at
         self.content = content
         self.score = 0
-        self.date = DATE_NOW
+        self.date = datetime.strftime(datetime.now(), '%Y-%m-%d')
 
     def __str__(self):
         return self.title
@@ -42,3 +42,18 @@ class News:
         Defines the score for a News, after it's calculated.
         """
         self.score = score
+
+    @classmethod
+    def from_json(cls, json):
+        """
+        Creates and returns a News instance from a json object.
+        """
+        return cls(json['source']['name'],
+                   json['author'],
+                   json['title'],
+                   json['description'],
+                   json['url'],
+                   json['urlToImage'],
+                   json['publishedAt'],
+                   json['content'])
+

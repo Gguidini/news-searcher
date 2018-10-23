@@ -2,6 +2,7 @@
 Test cases for the News class.
 """
 import unittest
+import json
 from context import MODELS
 
 class TestNews(unittest.TestCase):
@@ -54,6 +55,39 @@ class TestNews(unittest.TestCase):
         self.news2.set_score(50)
         news_list = [self.news2, self.news1, self.news]
         self.assertEqual([self.news, self.news1, self.news2], sorted(news_list))
+
+    def test_news_from_json(self):
+        """
+        Tests the creation of a news instance from a json object.
+        """
+        raw_news = """  {
+                            "articles": [
+                                {
+                                    "author": "Guilherme Dearo",
+                                    "content": "São Paulo – Segundo uma pesquisa recente do Datafolha, saúde é a maior preocupação dos brasileiros, com 23% da população (quase um entre quatro) citando a questão como a mais importante da atualidade. Saúde superou segurança, que dominava a lista das maiores … [+13778 chars]",
+                                    "description": "EXAME entrevistou especialistas na área de saúde para analisar a qualidade e viabilidade das propostas de Bolsonaro e Haddad",
+                                    "publishedAt": "2018-10-21T09:00:05Z",
+                                    "source": {
+                                        "id": null,
+                                        "name": "Abril.com.br"
+                                    },
+                                    "title": "O que propõem Haddad e Bolsonaro para a Saúde, maior preocupação nacional",
+                                    "url": "https://exame.abril.com.br/brasil/o-que-propoem-haddad-e-bolsonaro-para-a-saude-maior-preocupacao-nacional/",
+                                    "urlToImage": "https://abrilexame.files.wordpress.com/2016/09/size_960_16_9_protestos18.jpg?quality=70&strip=info&w=680&h=453&crop=1"
+                                }
+                            ],
+                            "status": "ok",
+                            "totalResults": 1
+                        }"""
+        # Extracts the articles from the results
+        json_results = json.loads(raw_news)
+        json_new = json_results['articles']
+        # Creates the News instance
+        news_new = MODELS.News.from_json(json_new[0])
+        # Tests result
+        self.assertEqual(MODELS.News, type(news_new))
+        self.assertEqual("O que propõem Haddad e Bolsonaro para a Saúde, maior preocupação nacional", news_new.title)
+        self.assertEqual("https://exame.abril.com.br/brasil/o-que-propoem-haddad-e-bolsonaro-para-a-saude-maior-preocupacao-nacional/", news_new.url)
 
 # Runs tests when executing file
 if __name__ == '__main__':
