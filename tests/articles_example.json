@@ -1,0 +1,45 @@
+{
+    "articles": [
+        {
+            "author": null,
+            "content": "Frequentemente a informação veiculada na mídia provoca um dissabor. Corrupção, violência, crise, trânsito caótico e péssima qualidade da educação e da saúde, pautas recorrentes nos cadernos de cidades, compõem um mosaico com pouca luz e muitas sombras. A soci… [+5405 chars]",
+            "description": "Ao contrário das utopias do passado, os jovens acreditam na excelência e no mérito...",
+            "publishedAt": "2018-10-22T08:30:00Z",
+            "source": {
+                "id": null,
+                "name": "Estadao.com.br"
+            },
+            "title": "Juventude, revolução silenciosa",
+            "url": "https://opiniao.estadao.com.br/noticias/geral,juventude-revolucao-silenciosa,70002557590",
+            "urlToImage": "http://www.estadao.com.br/estadao/novo/img/estadao.gif"
+        },
+        {
+            "author": null,
+            "content": "E aí, vai de Aids ou câncer? O analista de produtos Gilberto Barra, 27, ouviu na rádio esse resumo do que seria optar entre Jair Bolsonaro (PSL) e Fernando Haddad (PT) : duas alternativas trágicas. Sentiu-se representado. Sentimento similar ao de seis eleitor… [+7657 chars]",
+            "description": "E aí, vai de Aids ou câncer? O analista de produtos Gilberto Barra, 27, ouviu na rádio esse resumo do que seria optar entre Jair Bolsonaro (PSL) e Fernando Haddad (PT): duas alternativas trágicas. Sentiu-se representado. Sentimento similar ao de seis eleitore…",
+            "publishedAt": "2018-10-21T08:19:29Z",
+            "source": {
+                "id": null,
+                "name": "Uol.com.br"
+            },
+            "title": "De olho no voto | O que pensam eleitores em dúvida entre Bolsonaro, Haddad e voto nulo",
+            "url": "https://www1.folha.uol.com.br/poder/2018/10/o-que-pensam-eleitores-em-duvida-entre-haddad-bolsonaro-e-voto-nulo.shtml",
+            "urlToImage": "https://f.i.uol.com.br/fotografia/2018/10/20/15400064435bcaa22beee9b_1540006443_3x2_rt.jpg"
+        },
+        {
+            "author": null,
+            "content": "Saúde, educação, emprego, economia e segurança estão entre os termos mais buscados no Google durantes as eleições 2018, de acordo com dados da plataforma Google Trends. Os candidatos ao Governo de São Paulo João Doria ( PSDB ) e Márcio França ( PSB ), que ava… [+13796 chars]",
+            "description": "Quais são as propostas dos candidatos nas áreas mais procuradas pelos brasileiros na internet",
+            "publishedAt": "2018-10-22T16:27:00Z",
+            "source": {
+                "id": null,
+                "name": "Estadao.com.br"
+            },
+            "title": "Compare os planos de governo de Doria e Márcio França para São Paulo",
+            "url": "https://politica.estadao.com.br/noticias/eleicoes,compare-os-planos-de-governo-de-doria-e-marcio-franca-para-sao-paulo,70002554588",
+            "urlToImage": "https://img.estadao.com.br/resources/jpg/2/4/1539980185142.jpg"
+        }
+    ],
+    "status": "ok",
+    "totalResults": 3
+}

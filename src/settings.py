@@ -13,7 +13,7 @@ import os
 # To specify new paths in the project use os.path.join( BASE_DIR, 'new_path')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-API_KEY = ''
+API_KEY = 'aa40d5c0ed5b4673a9798bf080ccbc34'
 
 SOURCES = [
     'globo.com',

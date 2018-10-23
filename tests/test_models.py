@@ -89,6 +89,22 @@ class TestNews(unittest.TestCase):
         self.assertEqual("O que propõem Haddad e Bolsonaro para a Saúde, maior preocupação nacional", news_new.title)
         self.assertEqual("https://exame.abril.com.br/brasil/o-que-propoem-haddad-e-bolsonaro-para-a-saude-maior-preocupacao-nacional/", news_new.url)
 
+    def test_multiple_articles(self):
+        """
+        Tests the creation of a list of articles from json
+        """
+        with open('articles_example.json', 'r') as fd:
+            raw_news = fd.read()
+        json_news = json.loads(raw_news)
+        results = json_news['totalResults']
+        news = []
+        for article in json_news['articles']:
+            n = MODELS.News.from_json(article)
+            self.assertEqual(MODELS.News, type(n))
+            news.append(n)
+        self.assertEqual(news[0].title, "Juventude, revolução silenciosa")
+        self.assertEqual(results, len(news))
+
 # Runs tests when executing file
 if __name__ == '__main__':
     unittest.main()
