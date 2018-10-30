@@ -31,4 +31,4 @@ SOURCES = [
 TERMS = []
 
 # Temporário. 
-SEARCH = input("Qual o principal termo da noticia buscada: ")
+#SEARCH = input("Qual o principal termo da noticia buscada: ")

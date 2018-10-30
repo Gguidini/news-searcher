@@ -12,9 +12,14 @@ import os
 import sys
 
 # Expands import paths for the tests folder
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 # imports the src folder
-import src.models
+import models
+import news_handler
+import settings
 
-MODELS = src.models
+MODELS = models
+HANDLER = news_handler
+SETTINGS = settings
+
