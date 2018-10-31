@@ -18,8 +18,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'
 import models
 import news_handler
 import settings
+import score_handler
 
 MODELS = models
 HANDLER = news_handler
 SETTINGS = settings
+SCORER = score_handler
 

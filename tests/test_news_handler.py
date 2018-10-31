@@ -41,7 +41,7 @@ class TestNewsHandler(unittest.TestCase):
         """
 
         client = HANDLER.api_client(api_key=self.API_KEY)
-        (response_size, article_list) = HANDLER.get_top_articles(client, 'vacina')
+        (response_size, article_list) = HANDLER.get_top_articles(client, 'saúde')
         self.assertEqual(response_size, len(article_list))
         self.assertEqual( list, type(article_list))
         self.assertEqual( MODELS.News, type(article_list[0]))

@@ -30,5 +30,17 @@ SOURCES = [
 
 TERMS = []
 
+# Words of interest and their respective weight value.
+# Weights are ranged from 0 to 5.
+# There are 7 diffent 'interest categories', so formatting is like follows:
+# word : [ [synonyms], sci/tech, politics, economics, dissemination, impact, severity, current interest]
+# every key is a word of interest in an article.
+SCORE_VALUES = {
+    'aids' : [['hiv'], 0, 0, 0, 1, 1, 5, 3],
+    'botulismo' : [[], 0, 0, 0, 1, 1, 4, 1],
+    'dengue' : [[], 0, 0, 0, 1, 1, 3, 3],
+    'dst' : [['std'], 0, 0, 0, 1, 1, 1, 2]
+}
+
 # Temporário. 
 #SEARCH = input("Qual o principal termo da noticia buscada: ")
