@@ -22,6 +22,27 @@ def synonyms_pointer(parameters):
             pointers.append( (synonym, k))
     return pointers
 
+def synonyms_pointer2(parameters):
+    """
+    Creates a new list of terms of interest given the dictionary of parameters.
+    That's necessary because some parameters have synonyms, and they need to be found too.
+    Obviously, a synonym's weight is the same of the respective word.
+
+    Arguments>
+    > paramenters : dict
+        The dictionary with terms of interest, their synonyms, and their weight score.
+    """
+
+    pointers = {}
+    for k, v in parameters.items():
+        pointers[k] = k # a word of interest points to itself
+        for synonym in v[0]: # v[0] is the list of synonyms
+            pointers[synonym] = k
+    return pointers
+
+def create_counter(parameters):
+    return  {key: 0 for key in parameters}
+
 def score_news(article : News, parameters, pointers = None):
     """
     Given a news article, calculates its score and updates it.
@@ -65,3 +86,36 @@ def score_news(article : News, parameters, pointers = None):
     
     article.score = score
 
+def score_news2(article : News, parameters, pointers = None, apparitions = None):
+
+    if pointers == None:
+        pointers = synonyms_pointer2(parameters)
+
+    if apparitions == None:
+        apparitions = create_counter(parameters)
+
+    total = article.title.lower().split() + article.content.lower().split()
+
+    for word in total:
+        if word in pointers:
+            apparitions[pointers[word]] += 1
+
+
+    # amount of words in the article, for normalization purposes
+    words = len(article.title.split(' ')) + len(article.content.split(' '))
+
+    # score of article
+    score = 0
+
+    for reference,apparition in apparitions.items():
+        p_value = parameters[reference][1:] # weights in categories.
+        
+        apparitions[reference] /= words
+        
+        score_increment = 0
+        
+        for v in p_value:
+            score_increment += (v/5) * apparition
+        
+        score += (score_increment)
+    return score
