@@ -24,7 +24,7 @@ class News:
         self.date = datetime.strftime(datetime.now(), '%Y-%m-%d')
         self.disease = ""
         self.region = ""
-        self.country = "" if not self.source.endswith(".br") else "Brazil"
+        self.country = "" 
 
     def __str__(self):
         return self.title
