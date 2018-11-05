@@ -2,6 +2,7 @@
 This module defines the classes used in the system.
 """
 
+import json
 from datetime import datetime
 
 class News:
@@ -21,6 +22,9 @@ class News:
         self.content = content
         self.score = 0
         self.date = datetime.strftime(datetime.now(), '%Y-%m-%d')
+        self.disease = ""
+        self.region = ""
+        self.country = "" if not self.source.endswith(".br") else "Brazil"
 
     def __str__(self):
         return self.title
@@ -43,11 +47,33 @@ class News:
         """
         self.score = score
 
+    def to_json(self):
+        """
+        Transforms a News instance into a json object
+        """
+        dictionary = {
+            'source' : self.source,
+            'author' : self.author,
+            'title' : self.title,
+            'description' : self.description,
+            'url' : self.url,
+            'url_to_image' : self.url_to_image,
+            'published_at' : self.published_at,
+            'content' : self.content,
+            'score' : self.score,
+            'date' : self.date,
+            'disease' : self.disease,
+            'region' : self.region,
+            'country' : self.country
+        }
+        return json.dumps(dictionary)
+
     @classmethod
     def from_json(cls, json):
         """
         Creates and returns a News instance from a json object.
         """
+
         return cls(json['source']['name'],
                    json['author'],
                    json['title'],
@@ -56,4 +82,5 @@ class News:
                    json['urlToImage'],
                    json['publishedAt'],
                    json['content'])
+
 

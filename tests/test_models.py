@@ -93,6 +93,7 @@ class TestNews(unittest.TestCase):
         """
         Tests the creation of a list of articles from json
         """
+
         with open('articles_example.json', 'r') as fd:
             raw_news = fd.read()
         json_news = json.loads(raw_news)
@@ -105,6 +106,18 @@ class TestNews(unittest.TestCase):
         self.assertEqual(news[0].title, "Juventude, revolução silenciosa")
         self.assertEqual(results, len(news))
 
+    def test_to_json(self):
+        """
+        Verify that to_json function works.
+        """
+
+        j = self.news.to_json()
+        self.assertEqual(str, type(j)) # jsons are stored as strings
+        keys = ['source', 'author', 'title', 'description', 'url', 'url_to_image', 'country', 'region',
+                'score', 'date', 'disease']
+        for k in keys:
+            self.assertTrue(k in j) # asserts taht key is in the json object
+            
 # Runs tests when executing file
 if __name__ == '__main__':
     unittest.main()
