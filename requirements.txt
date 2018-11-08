@@ -5,3 +5,4 @@ newsapi-python==0.2.3
 pkg-resources==0.0.0
 requests==2.20.0
 urllib3==1.21.1
+CherryPy==18.0.1
