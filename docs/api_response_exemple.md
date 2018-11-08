@@ -13,7 +13,7 @@ For more information visit the [newsapi-python](https://newsapi.org/docs/client-
 # Result Example
 
 The result of a query is a json object. An example of such object is:
-
+```json
 {
     "articles": [
         {
@@ -32,4 +32,4 @@ The result of a query is a json object. An example of such object is:
     ],
     "status": "ok",
     "totalResults": 1
-}
+```
