@@ -2,7 +2,7 @@
 Defines a few functions to make it easier to generate parts of the HTMLS served.
 """
 
-def header(title='Title', *links, script="", style=""):
+def header(title='Title', links=[], script="", style=""):
     """
     An HTML header has a title tag, and may contain several links to the page.
     This function returns the html code for a <head> tag, with title.
@@ -22,35 +22,19 @@ def header(title='Title', *links, script="", style=""):
     SCRIPT = '<script>' + script + '</script>'
     STYLE = '<style>' + style + '</style>'
     TAIL = '</head>'
-    return HEAD + "\n".join(links) + TAIL + SCRIPT + STYLE  
+    return HEAD + "\n".join(links) + SCRIPT + STYLE  + TAIL
 
-def api_key_form(api_key):
+def body(inner_html, script):
     """
-    Parser for the api_key form to html.
+    Returns a body with given html and the script.
     """
-    HEAD = """<form action="settings" method="post">
-            <input type="hidden" name="form-header" value="apikey">
-            API KEY: <input type="text" name="apikey" value="
-           """
-    TAIL = """
-            ">
-            <input type="submit" value="Submit">
-            </form>
-           """
-    return HEAD + api_key + TAIL
+    return '<body id="body">' + inner_html + '<script>' + script + '</script></body>'
 
-def  sources_form(sources):
+def create_link(file_name, type):
     """
-    Parser for the sources form to html.
+    Created the html for a link given a src name.
     """
-    HEAD = """<form action="settings" method="post">
-            <input type="hidden" name="form-header" value="sources">
-           """
-    DEL_BOX = '<input type="checkbox" name="source_to_del" value="{value}">'
-    TAIL = """ 
-            <input type="submit" value="Submit">
-            </form>
-           """
-    body = [s + DEL_BOX.format(value=s) for s in sources]
-    return HEAD + "\n".join(body) + TAIL
-
+    if type == 'script':
+        return '<script src="' + file_name +'"></script>'
+    else:
+        return '<link rel="stylesheet" href="'+ file_name +'">'
