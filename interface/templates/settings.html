@@ -7,10 +7,49 @@
     <title>Document</title>
 </head>
 <body>
-    {% for source in sources %}
-        <input type="checkbox" name="sources" id="">{{ source }}
-        <br>
-    {% endfor %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h2>chave da api</h2>
+        <input type="text" name="api" placeholder="{{ key }}">
+        <button type="submit">Atualizar Chave</button>
+    </form>
+    <br>
 
+    <form action="" method="post">
+    {% csrf_token %}
+        <h2>fontes</h2>
+        {% for source in sources %}
+            <input checked type="checkbox" name="valid_source" value="{{ source }}">{{ source }}
+            <br>
+        {% endfor %}
+        <button type="submit">Atualizar Fontes</button>
+    </form>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="source" placeholder="fonte">
+        <button type="submit">Adicionar Fonte</button>
+    </form>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h2>Termos</h2>
+        <ul>
+            {% for term in terms %}
+            <li>{{ term }} - <button type="submit" name="delete_term" value="{{ term }}">Deletar</button></li>
+            {% endfor %}
+        </ul>
+    </form>
+
+    <form action="" method="post">
+    {% csrf_token %}
+        <input type="text" name="term" placeholder="termo">
+        <button type="submit">Adicionar Termo</button>
+    </form>
+    
+    <form action="" method="post">
+    {% csrf_token %}    
+        <button type="submit">Restaurar</button>
+    </form>
+    <button onclick="location.href = '{% url 'url_index' %}' ">Voltar</button>
 </body>
 </html>
