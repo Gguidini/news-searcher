@@ -1,5 +1,6 @@
-from interface.src.news_handler import api_client, get_all_articles
-import interface.src.score_handler
+import interface.src.news_handler as news_handler
+import interface.src.score_handler as score_handler
+import interface.src.data_output as output
 from interface.src.config import API_KEY, SOURCES, TERMS
 from interface.src.config import updateKey, addSource, addTerm, removeSource, removeTerm
 from django.shortcuts import render
@@ -43,10 +44,18 @@ def result(request):
         # busca os termos checkados
         else:
             data['terms'] = request.GET.getlist("valid_term")
-    client = api_client(str(data['key']))
+    client = news_handler.api_client(str(data['key']))
     results = []
     # adiciona todos os termos ao result
+    size = 0
+    results = []
     for term in data['terms']:
-        results += get_all_articles(client, term, data['sources'])[1]
+        s, r = news_handler.get_all_articles(client, term, data['sources'])
+        size += s
+        results += r
     data['results'] = results
+    data['size'] = size
+    # Uncomment to test production of docx file
+    # File will be saved in docs/ with name clipping + today's date
+    #output.create_docx(results, 'docs/')
     return render(request, 'results.html', data)
