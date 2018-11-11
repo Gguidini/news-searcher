@@ -4,7 +4,7 @@ The process for retrieving News uses NewsAPI
 """
 
 import json
-from interface.models import News
+from interface.src.models import News
 from newsapi import NewsApiClient
 from newsapi.newsapi_exception import NewsAPIException
 from datetime import datetime, timedelta

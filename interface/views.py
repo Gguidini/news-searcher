@@ -1,7 +1,7 @@
-from interface.news_handler import api_client, get_all_articles
-import interface.score_handler
-from interface.config import API_KEY, SOURCES, TERMS
-from interface.config import updateKey, addSource, addTerm, removeSource, removeTerm
+from interface.src.news_handler import api_client, get_all_articles
+import interface.src.score_handler
+from interface.src.config import API_KEY, SOURCES, TERMS
+from interface.src.config import updateKey, addSource, addTerm, removeSource, removeTerm
 from django.shortcuts import render
 
 data = {}

@@ -9,11 +9,11 @@ DON'T CHANGE THE VALUES IN THIS MODULE UNLESS YOU KNOW WHAT YOU'RE DOING.
 """
 import pickle
 
-API_KEY = pickle.load(open("interface/bins/api-key.bin", "rb"))
+API_KEY = pickle.load(open("interface/src/bins/api-key.bin", "rb"))
 
-SOURCES = pickle.load(open("interface/bins/sources.bin", "rb"))
+SOURCES = pickle.load(open("interface/src/bins/sources.bin", "rb"))
 
-TERMS =  pickle.load(open("interface/bins/terms.bin", "rb"))
+TERMS =  pickle.load(open("interface/src/bins/terms.bin", "rb"))
 
 # Words of interest and their respective weight value.
 # Weights are ranged from 0 to 5.
