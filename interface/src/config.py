@@ -30,25 +30,25 @@ SCORE_VALUES = {
 
 def updateKey(new_key):
     API_KEY = new_key
-    pickle.dump(API_KEY, open("interface/bins/api-key.bin", "wb"))
+    pickle.dump(API_KEY, open("interface/src/bins/api-key.bin", "wb"))
     return API_KEY
 
 def addSource(source):
     SOURCES.append(str(source))
-    pickle.dump(SOURCES, open("interface/bins/sources.bin", "wb"))
+    pickle.dump(SOURCES, open("interface/src/bins/sources.bin", "wb"))
     return SOURCES
 
 def removeSource(source):
     SOURCES.remove(str(source))
-    pickle.dump(SOURCES, open("interface/bins/sources.bin", "wb"))
+    pickle.dump(SOURCES, open("interface/src/bins/sources.bin", "wb"))
     return SOURCES
 
 def addTerm(term):
     TERMS.append(str(term))
-    pickle.dump(TERMS, open("interface/bins/terms.bin", "wb"))
+    pickle.dump(TERMS, open("interface/src/bins/terms.bin", "wb"))
     return TERMS
 
 def removeTerm(term):
     TERMS.remove(str(term))
-    pickle.dump(TERMS, open("interface/bins/terms.bin", "wb"))
+    pickle.dump(TERMS, open("interface/src/bins/terms.bin", "wb"))
     return TERMS

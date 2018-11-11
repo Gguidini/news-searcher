@@ -8,18 +8,18 @@
 </head>
 <body>
     <form action="{% url 'url_results' %}" method="get">
-            <input type="text" name="term" placeholder="termo">
-            <button type="submit">Buscar Termo</button>
-
-    </form>
-    <br>
-    <form action="{% url 'url_results' %}" method="get">
         <h2>termos</h2>
         {% for term in terms %}
         <input checked type="checkbox" name="valid_term" value="{{ term }}">{{ term }}
         <br>
         {% endfor %}
-        <button type="submit">Buscar Termos</button>
+        <h2>fontes</h2>
+        {% for source in sources %}
+        <input checked type="checkbox" name="valid_source" value="{{ source }}">{{ source }}
+        <br>
+        {% endfor %}
+        <br>
+        <button type="submit">Buscar</button>
     </form>
     <button onclick="location.href = '{% url 'url_settings' %}' ">Configurações</button>
 </body>

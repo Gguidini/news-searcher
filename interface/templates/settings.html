@@ -14,16 +14,17 @@
         <button type="submit">Atualizar Chave</button>
     </form>
     <br>
-
-    <form action="" method="post">
-    {% csrf_token %}
-        <h2>fontes</h2>
-        {% for source in sources %}
-            <input checked type="checkbox" name="valid_source" value="{{ source }}">{{ source }}
-            <br>
-        {% endfor %}
-        <button type="submit">Atualizar Fontes</button>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h2>Fontes</h2>
+        <ul>
+            {% for source in sources %}
+            <li>{{ source }} - <button type="submit" name="delete_source" value="{{ source }}">Deletar</button></li>
+            {% endfor %}
+        </ul>
     </form>
+
+    
     <form action="" method="post">
         {% csrf_token %}
         <input type="text" name="source" placeholder="fonte">
@@ -45,11 +46,8 @@
         <input type="text" name="term" placeholder="termo">
         <button type="submit">Adicionar Termo</button>
     </form>
-    
-    <form action="" method="post">
-    {% csrf_token %}    
-        <button type="submit">Restaurar</button>
-    </form>
+    <br>
+   
     <button onclick="location.href = '{% url 'url_index' %}' ">Voltar</button>
 </body>
 </html>
