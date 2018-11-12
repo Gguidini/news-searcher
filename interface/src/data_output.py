@@ -9,6 +9,7 @@ import copy # Table extraction
 import requests # Picture recover from url
 import datetime
 
+from pathlib import Path # multiplatform integration
 from docx import Document   # Accessing and creating documents
 from docx.shared import Pt, Cm, RGBColor  # Image and font sizes
 from docx.enum.text import WD_ALIGN_PARAGRAPH # paragraph alignment
@@ -17,7 +18,7 @@ from docx.enum.style import WD_STYLE_TYPE # style types
 # Docx Output
 
 # template document name
-ORIGIN = 'interface/src/assets/template.docx'
+ORIGIN = Path('interface/src/assets/template.docx')
 
 # colors RGB values
 DARK_GRAY = [0x68, 0x68, 0x68]
@@ -88,7 +89,7 @@ def format_table(table, article):
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     region.add_run('Região Desconhecida', style='regionStyle').bold = True 
-    title.add_run( article.title, style='titleStyle').bold = True 
+    title.add_run(article.title, style='titleStyle').bold = True 
     description.add_run(article.description, style='textStyle')
     url.add_run(article.url, style='urlStyle')
 
@@ -107,16 +108,16 @@ def create_docx(articles, path_to_output):
     output = Document()
 
     # Create styles
-    region_style = add_style(output, 'regionStyle', 'PT Sans', 14, DARK_GRAY)
-    title_style = add_style(output, 'titleStyle', 'PT Sans', 14, BLACK)
-    text_style = add_style(output, 'textStyle', 'PT Sans', 12, BLACK)
-    url_style = add_style(output, 'urlStyle', 'PT Sans', 8, DARK_GRAY)
+    add_style(output, 'regionStyle', 'PT Sans', 14, DARK_GRAY)
+    add_style(output, 'titleStyle', 'PT Sans', 14, BLACK)
+    add_style(output, 'textStyle', 'PT Sans', 12, BLACK)
+    add_style(output, 'urlStyle', 'PT Sans', 8, DARK_GRAY)
 
     # Expand margins
     change_margins(output, 1)
 
     # Copy tables template to output file
-    for i in range(len(articles)):
+    for _ in range(len(articles)):
         add_table(output, get_template_table(ORIGIN))
     # Populate tables
     for idx, article in enumerate(articles):
@@ -127,5 +128,6 @@ def create_docx(articles, path_to_output):
     # Maybe add extra stuff later
 
     # Save doc
-    output.save(path_to_output + output_name + '.docx')
-    return path_to_output + output_name
+    path = Path(path_to_output) / (output_name + '.docx')
+    output.save(path)
+    return path
