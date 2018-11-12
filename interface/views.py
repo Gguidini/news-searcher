@@ -50,11 +50,27 @@ def result(request):
     client = news_handler.api_client(str(data['key']))
     results = []
     size = 0
+
     # busca por todos os termos em todas as fontes
     for term in data['terms']:
         s, r = news_handler.get_all_articles(client, term, data['sources'])
         size += s
         results += r
+    
+    
+
+
+    final = []
+    for i in range (len(results)):
+        nota = score_handler.ssrc_news2(results[i],TERMS,None,None)
+        #final.append(score_handler.ssrc_news2(results[i],TERMS,None,None),results[i],size[i])
+        print('Nota da noticia %i = ' %i + str(nota))
+    #final.sort()
+
+    #for sortedNews in final:
+    #    data['results'].append(sortedNews[1])
+    #    data['size'].append(sortedNews[2])
+
     data['results'] = results
     data['size'] = size
     

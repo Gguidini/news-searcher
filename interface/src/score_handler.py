@@ -94,11 +94,24 @@ def ssrc_news2(article : News, parameters, pointers = None, apparitions = None):
     if apparitions == None:
         apparitions = create_counter(parameters)
 
-    total = article.title.lower().split() + article.content.lower().split()
+    fullTitle = article.title.lower().replace(',','').replace('.','').replace(':','')
+    fullContent = article.content.lower().replace(',','').replace('.','').replace(':','')
 
+    total = fullTitle.split() + fullContent.split()
+
+
+    f = open('teste.txt', 'w')
     for word in total:
+        f.write(word + ' ')
         if word in pointers:
             apparitions[pointers[word]] += 1
+
+    f.close()
+    print('\n\n\n\n')
+    print('titulo = ' + fullTitle)
+    print('content = ' + fullContent)
+    print('aids apareceu %i vezes' %apparitions['aids'])
+
 
 
     # amount of words in the article, for normalization purposes
