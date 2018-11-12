@@ -27,7 +27,16 @@ def settings(request):
             data['sources'] = removeSource(request.POST.get("delete_source"))
         # adiciona um novo termo ao arquivo
         elif 'term' in request.POST and request.POST.get("term") not in data['terms']:
-            data['terms'] = addTerm(request.POST.get("term"))
+            term = request.POST.get("term")
+            sinonimo = request.POST.get("sinonimo")
+            t = request.POST.get("tech")
+            p = request.POST.get("politics")
+            e = request.POST.get("economics")
+            d = request.POST.get("dissemination")
+            i = request.POST.get("impact")
+            s = request.POST.get("severity")
+            c = request.POST.get("current")
+            data['terms'] = addTerm(term, sinonimo, t, p, e, d, i, s, c)
         # remove um termo do arquivo
         elif 'delete_term' in request.POST:
             data['terms'] = removeTerm(request.POST.get("delete_term"))

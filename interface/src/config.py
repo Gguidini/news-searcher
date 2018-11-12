@@ -22,12 +22,12 @@ TERMS =  pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "ter
 # There are 7 diffent 'interest categories', so formatting is like follows:
 # word : [ [synonyms], sci/tech, politics, economics, dissemination, impact, severity, current interest]
 # every key is a word of interest in an article.
-SCORE_VALUES = {
-    'aids' : [['hiv'], 0, 0, 0, 1, 1, 5, 3],
-    'botulismo' : [[], 0, 0, 0, 1, 1, 4, 1],
-    'dengue' : [[], 0, 0, 0, 1, 1, 3, 3],
-    'dst' : [['std'], 0, 0, 0, 1, 1, 1, 2]
-}
+#TERMS = {
+#    'aids' : [['hiv'], 0, 0, 0, 1, 1, 5, 3],
+#    'botulismo' : [[], 0, 0, 0, 1, 1, 4, 1],
+#    'dengue' : [[], 0, 0, 0, 1, 1, 3, 3],
+#    'dst' : [['std'], 0, 0, 0, 1, 1, 1, 2]
+#}
 
 # atualizar chave de api
 def updateKey(new_key):
@@ -48,13 +48,13 @@ def removeSource(source):
     return SOURCES
 
 # adicionar um novo termo
-def addTerm(term):
-    TERMS.append(str(term))
+def addTerm(term, sinonimos, t, p, e, d, i, s, c):
+    TERMS[str(term)] = [[sinonimos], int(t), int(p), int(e), int(d), int(i), int(s), int(c)]
     pickle.dump(TERMS, open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "wb"))
     return TERMS
 
 # remover um termo
 def removeTerm(term):
-    TERMS.remove(str(term))
+    TERMS.pop(str(term))
     pickle.dump(TERMS, open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "wb"))
     return TERMS
