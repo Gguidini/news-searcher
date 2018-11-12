@@ -1,9 +1,10 @@
+from django.shortcuts import render
+import interface.src.data_output as output
 import interface.src.news_handler as news_handler
 import interface.src.score_handler as score_handler
-import interface.src.data_output as output
 from interface.src.config import API_KEY, SOURCES, TERMS
 from interface.src.config import updateKey, addSource, addTerm, removeSource, removeTerm
-from django.shortcuts import render
+
 
 data = {}
 data['key'] = API_KEY
@@ -23,7 +24,7 @@ def settings(request):
             data['sources'] = addSource(request.POST.get("source"))
         # remove uma fonte do arquivo
         elif 'delete_source' in request.POST:
-            data['sources'] = removeTerm(request.POST.get("delete_source"))
+            data['sources'] = removeSource(request.POST.get("delete_source"))
         # adiciona um novo termo ao arquivo
         elif 'term' in request.POST and request.POST.get("term") not in data['terms']:
             data['terms'] = addTerm(request.POST.get("term"))
@@ -39,20 +40,21 @@ def result(request):
         data['sources'] = request.GET.getlist("valid_source")
     client = news_handler.api_client(str(data['key']))
     results = []
-    # adiciona todos os termos ao result
     size = 0
-    results = []
+    # busca por todos os termos em todas as fontes
     for term in data['terms']:
         s, r = news_handler.get_all_articles(client, term, data['sources'])
         size += s
         results += r
     data['results'] = results
     data['size'] = size
+    
     # Uncomment to test production of docx file
     # File will be saved in docs/ with name clipping + today's date
     #output.create_docx(results, 'docs/')
+
     #volta com os termos do arquivo
     data['sources'] = SOURCES
     data['terms'] = TERMS
-
+    
     return render(request, 'results.html', data)

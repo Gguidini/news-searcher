@@ -7,13 +7,15 @@ from settings import API_KEY
 
 DON'T CHANGE THE VALUES IN THIS MODULE UNLESS YOU KNOW WHAT YOU'RE DOING.
 """
+import os
 import pickle
+from news_searcher.settings import BASE_DIR
 
-API_KEY = pickle.load(open("interface/src/bins/api-key.bin", "rb"))
+API_KEY = pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "api-key.bin"), "rb"))
 
-SOURCES = pickle.load(open("interface/src/bins/sources.bin", "rb"))
+SOURCES = pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "sources.bin"), "rb"))
 
-TERMS =  pickle.load(open("interface/src/bins/terms.bin", "rb"))
+TERMS =  pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "rb"))
 
 # Words of interest and their respective weight value.
 # Weights are ranged from 0 to 5.
@@ -27,28 +29,32 @@ SCORE_VALUES = {
     'dst' : [['std'], 0, 0, 0, 1, 1, 1, 2]
 }
 
-
+# atualizar chave de api
 def updateKey(new_key):
     API_KEY = new_key
-    pickle.dump(API_KEY, open("interface/src/bins/api-key.bin", "wb"))
+    pickle.dump(API_KEY, open(os.path.join(BASE_DIR,"interface", "src", "bins", "api-key.bin"), "wb"))
     return API_KEY
 
+# adicionar uma nova fonte
 def addSource(source):
     SOURCES.append(str(source))
-    pickle.dump(SOURCES, open("interface/src/bins/sources.bin", "wb"))
+    pickle.dump(SOURCES, open(os.path.join(BASE_DIR,"interface", "src", "bins", "sources.bin"), "wb"))
     return SOURCES
 
+# remover uma fonte
 def removeSource(source):
     SOURCES.remove(str(source))
-    pickle.dump(SOURCES, open("interface/src/bins/sources.bin", "wb"))
+    pickle.dump(SOURCES, open(os.path.join(BASE_DIR,"interface", "src", "bins", "sources.bin"), "wb"))
     return SOURCES
 
+# adicionar um novo termo
 def addTerm(term):
     TERMS.append(str(term))
-    pickle.dump(TERMS, open("interface/src/bins/terms.bin", "wb"))
+    pickle.dump(TERMS, open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "wb"))
     return TERMS
 
+# remover um termo
 def removeTerm(term):
     TERMS.remove(str(term))
-    pickle.dump(TERMS, open("interface/src/bins/terms.bin", "wb"))
+    pickle.dump(TERMS, open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "wb"))
     return TERMS
