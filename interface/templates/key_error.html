@@ -1,0 +1,52 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Key Error</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .img-center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <h1>Erro na Chave da API</h1>
+
+        <p>O sistema de busca de notícias faz uso da NewsAPI. Para que ela funcione, você precisa de uma chave de acesso válida. Aparentemente sua chave está inválida. <b>O sistema não irá funcionar até que uma chave válida seja colocada no sistema</b>.</p>
+
+        <p><b>Siga os passos abaixo</b> para obter uma nova chave para o sistema.</p>
+
+        <ol>
+            <h3><li>Faça o Login no site da API</li></h3>
+            <p>Visite o site da <a href="https://newsapi.org/login" target="_blank">NewsAPI</a> e faça o login com a conta da Sala de Situação. Se você não sabe o login e a senha pergunte ao <em>team leader</em> responsável.</p>
+            
+            <h3><li>Renovar a chave da API</li></h3>
+                <p>Clique em "Regenerate Key" e copie a nova chave gerada.</p>
+
+            <h3><li>Adicionar a chave no sistema</li></h3>
+                <p>Cole a nova chave no campo abaixo e clique em Atualizar Chave.</p>
+                <p>Depois de atualizar a chave você será redirecionado para as configurações do sistema, mas <b>não precisará mexer em mais nada</b>. Volte para a página de busca e tente novamente.</p>
+                <form action="{% url 'url_settings'%}" method="POST">
+                    {% csrf_token %}
+                    <h4>Chave da API</h4>
+                    <input type="text" name="api" placeholder="Cole a nova chave aqui.">
+                    <button type="submit">Atualizar Chave</button>
+                </form>
+        </ol>
+
+        <h2>Pronto! Agora tente realizar a busca novamente.</h2>
+    </body>
+</html>

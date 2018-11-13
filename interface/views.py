@@ -48,6 +48,8 @@ def result(request):
         data['terms'] = request.GET.getlist("valid_term")
         data['sources'] = request.GET.getlist("valid_source")
     client = news_handler.api_client(str(data['key']))
+    if client == None:
+        return render(request, 'key_error.html', {})
     results = []
     size = 0
 
