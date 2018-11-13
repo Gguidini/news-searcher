@@ -27,8 +27,8 @@ def settings(request):
             data['sources'] = removeSource(request.POST.get("delete_source"))
         # adiciona um novo termo ao arquivo
         elif 'term' in request.POST and request.POST.get("term") not in data['terms']:
-            term = request.POST.get("term")
-            sinonimo = request.POST.get("sinonimo")
+            term = request.POST.get("term").lower()
+            sinonimo = request.POST.get("sinonimo").lower()
             t = request.POST.get("tech")
             p = request.POST.get("politics")
             e = request.POST.get("economics")
@@ -45,42 +45,44 @@ def settings(request):
 
 def result(request):
     if request.method == 'GET':
-        data['terms'] = request.GET.getlist("valid_term")
+        valid_terms = request.GET.getlist("valid_term")
         data['sources'] = request.GET.getlist("valid_source")
+    # select only the valid terms
+    data['valid_terms'] = { term: data['terms'].get(term) for term in valid_terms }
+    # list of news
+    data['results'] = []
+    # get the initialized api client 
     client = news_handler.api_client(str(data['key']))
     if client == None:
         return render(request, 'key_error.html', {})
+    # store all news to send to data['results']
     results = []
+    # news score
+    scores = []
+    # quantity of news
     size = 0
-
-    # busca por todos os termos em todas as fontes
-    for term in data['terms']:
+    # search for all terms in all sources
+    for term in data['valid_terms']:
         s, r = news_handler.get_all_articles(client, term, data['sources'])
         size += s
         results += r
-    
-    
-
-
-    final = []
-    for i in range (len(results)):
-        nota = score_handler.ssrc_news2(results[i],TERMS,None,None)
-        #final.append(score_handler.ssrc_news2(results[i],TERMS,None,None),results[i],size[i])
-        print('Nota da noticia %i = ' %i + str(nota))
-    #final.sort()
-
-    #for sortedNews in final:
-    #    data['results'].append(sortedNews[1])
-    #    data['size'].append(sortedNews[2])
-
-    data['results'] = results
+    # set quantity of news
     data['size'] = size
+    # calculate news score
+    for i in range (len(results)):
+        nota = score_handler.ssrc_news(results[i],data['valid_terms'],None,None)
+        scores.append((-nota,i))
+    # sort by score
+    scores.sort()
+    # insert sorted news
+    data['results'] = sorted(results, reverse = True)
     
+
     # Uncomment to test production of docx file
     # File will be saved in docs/ with name clipping + today's date
     #output.create_docx(results, 'docs/')
 
-    #volta com os termos do arquivo
+    # get back with old file terms
     data['sources'] = SOURCES
     data['terms'] = TERMS
     
