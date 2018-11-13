@@ -73,8 +73,8 @@ def result(request):
     # sort by score
     scores.sort()
     # insert sorted news
-    for sortedNews in scores:
-        data['results'].append(results[int(sortedNews[1])])
+    data['results'] = sorted(results, reverse = True)
+    
 
     # Uncomment to test production of docx file
     # File will be saved in docs/ with name clipping + today's date
