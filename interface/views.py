@@ -53,6 +53,8 @@ def result(request):
     data['results'] = []
     # get the initialized api client 
     client = news_handler.api_client(str(data['key']))
+    if client == None:
+        return render(request, 'key_error.html', {})
     # store all news to send to data['results']
     results = []
     # news score
