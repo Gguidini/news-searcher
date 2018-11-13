@@ -45,8 +45,10 @@ def settings(request):
 
 def result(request):
     if request.method == 'GET':
-        data['terms'] = request.GET.getlist("valid_term")
+        valid_terms = request.GET.getlist("valid_term")
         data['sources'] = request.GET.getlist("valid_source")
+    # select only the valid terms
+    data['valid_terms'] = { term: data['terms'].get(term) for term in valid_terms }
     # list of news
     data['results'] = []
     # get the initialized api client 
@@ -58,7 +60,7 @@ def result(request):
     # quantity of news
     size = 0
     # search for all terms in all sources
-    for term in data['terms']:
+    for term in data['valid_terms']:
         s, r = news_handler.get_all_articles(client, term, data['sources'])
         size += s
         results += r
@@ -66,7 +68,7 @@ def result(request):
     data['size'] = size
     # calculate news score
     for i in range (len(results)):
-        nota = score_handler.ssrc_news(results[i],TERMS,None,None)
+        nota = score_handler.ssrc_news(results[i],data['valid_terms'],None,None)
         scores.append((-nota,i))
     # sort by score
     scores.sort()
