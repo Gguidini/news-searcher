@@ -68,7 +68,7 @@ def result(request):
     data['size'] = size
     # calculate news score
     for i in range (len(results)):
-        nota = score_handler.ssrc_news(results[i],data['valid_terms'],None,None)
+        nota = score_handler.ssrc_news(results[i],data['valid_terms'])
         scores.append((-nota,i))
     # sort by score
     scores.sort()

@@ -31,29 +31,58 @@
         <button type="submit">Adicionar Fonte</button>
     </form>
 
-    <form action="" method="POST">
-        {% csrf_token %}
-        <h2>Termos</h2>
-        <ul>
-            {% for term in terms %}
-            <li>{{ term }} - <button type="submit" name="delete_term" value="{{ term }}">Deletar</button></li>
+    <h2>Termos</h2>
+    <style type="text/css">
+            .tg  {border-collapse:collapse;border-spacing:0;}
+            .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+            .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+            .tg .tg-baqh{text-align:center;vertical-align:top}
+            .tg .tg-0lax{text-align:left;vertical-align:top}
+    </style>
+        <table class="tg">
+            <tr>
+                <th class="tg-baqh">Termo</th>
+                <th class="tg-baqh">Sinônimos</th>
+                <th class="tg-baqh">Score<br>Tecnologia</th>
+                <th class="tg-baqh">Score<br>Politico</th>
+                <th class="tg-baqh">Score<br>Economico</th>
+                <th class="tg-baqh">Score<br>Disseminação</th>
+                <th class="tg-baqh">Score<br>Impacto</th>
+                <th class="tg-baqh">Score<br>Seriedade</th>
+                <th class="tg-baqh">Score<br>Interesse</th>
+                <th class="tg-0lax"></th>
+            </tr>
+            <form action="" method="POST">
+            {% csrf_token %}
+            {% for key, value in terms.items %}
+            <tr>
+            <td class="tg-0lax">{{ key }}</td>
+            {% for v in value %}
+                <td class="tg-0lax">
+                {{v}}
+                </td>
             {% endfor %}
-        </ul>
-    </form>
-
-    <form action="" method="post">
-    {% csrf_token %}
-        <input type="text" name="term" placeholder="termo">
-        <input type="text" name="sinonimo" placeholder="sinonimo">
-        <input type="number" min="0" max="5" name="tech" value="0">
-        <input type="number" min="0" max="5" name="politics" value="0">
-        <input type="number" min="0" max="5" name="economics"value="0">
-        <input type="number" min="0" max="5" name="dissemination" value="0">
-        <input type="number" min="0" max="5" name="impact" value="0">
-        <input type="number" min="0" max="5" name="severity" value="0">
-        <input type="number" min="0" max="5" name="current" value="0">
-        <button type="submit">Adicionar Termo</button>
-    </form>
+            <td class="tg-0lax"> <button type="submit" name="delete_term" value="{{ key }}">Deletar</button> </td>
+            </tr>
+            {% endfor %}
+            </form>
+            <form action="" method="post">
+            {% csrf_token %}
+            <tr>
+            <td class="tg-0lax"> <input type="text" name="term" placeholder="termo"> </td>
+            <td class="tg-0lax"> <input type="text" name="sinonimo" placeholder="sinonimo"> </td>
+            <td class="tg-0lax"> <input type="number" min="0" max="5" name="tech" value="0"></td>
+            <td class="tg-0lax"> <input type="number" min="0" max="5" name="politics" value="0"></td>
+            <td class="tg-0lax"> <input type="number" min="0" max="5" name="economics"value="0"></td>
+            <td class="tg-0lax"> <input type="number" min="0" max="5" name="dissemination" value="0"></td>
+            <td class="tg-0lax"> <input type="number" min="0" max="5" name="impact" value="0"></td>
+            <td class="tg-0lax"> <input type="number" min="0" max="5" name="severity" value="0"></td>
+            <td class="tg-0lax"> <input type="number" min="0" max="5" name="current" value="0"></td>
+            <td class="tg-0lax"><button type="submit">Adicionar Termo</button></td>
+            </tr>
+            </form>
+        </table>     
+        
     <br>
    
     <button onclick="location.href = '{% url 'url_index' %}' ">Voltar</button>
