@@ -66,13 +66,10 @@ def result(request):
     data['size'] = size
     # calculate news score
     for i in range (len(results)):
-        nota = score_handler.ssrc_news(results[i],TERMS,None,None)
-        scores.append((-nota,i))
-    # sort by score
-    scores.sort()
+        score_handler.ssrc_news(results[i],TERMS,None,None)
     # insert sorted news
-    for sortedNews in scores:
-        data['results'].append(results[int(sortedNews[1])])
+    data['results'] = sorted(results, reverse = True)
+    
 
     # Uncomment to test production of docx file
     # File will be saved in docs/ with name clipping + today's date

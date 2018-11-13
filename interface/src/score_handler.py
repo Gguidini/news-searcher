@@ -103,4 +103,4 @@ def ssrc_news(article : News, parameters, pointers = None, apparitions = None):
         
         ssrc += (ssrc_increment)
 
-    return ssrc
+    article.set_score(ssrc)
