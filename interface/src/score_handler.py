@@ -15,24 +15,6 @@ def synonyms_pointer(parameters):
         The dictionary with terms of interest, their synonyms, and their weight ssrc.
     """
 
-    pointers = []
-    for k, v in parameters.items():
-        pointers.append( (k,k)) # a word of interest points to itself
-        for synonym in v[0]: # v[0] is the list of synonyms
-            pointers.append( (synonym, k))
-    return pointers
-
-def synonyms_pointer2(parameters):
-    """
-    Creates a new list of terms of interest given the dictionary of parameters.
-    That's necessary because some parameters have synonyms, and they need to be found too.
-    Obviously, a synonym's weight is the same of the respective word.
-
-    Arguments>
-    > paramenters : dict
-        The dictionary with terms of interest, their synonyms, and their weight ssrc.
-    """
-
     pointers = {}
     for k, v in parameters.items():
         pointers[k] = k # a word of interest points to itself
@@ -40,10 +22,13 @@ def synonyms_pointer2(parameters):
             pointers[synonym] = k
     return pointers
 
+
 def create_counter(parameters):
+    #Create dic of how many times that parameters appears in the news
     return  {key: 0 for key in parameters}
 
-def ssrc_news(article : News, parameters, pointers = None):
+
+def ssrc_news(article : News, parameters, pointers = None, apparitions = None):
     """
     Given a news article, calculates its ssrc and updates it.
     The ssrc is calculated has follows:
@@ -66,53 +51,37 @@ def ssrc_news(article : News, parameters, pointers = None):
     if pointers == None:
         pointers = synonyms_pointer(parameters)
 
-    # amount of words in the article, for normalization purposes
-    words = len(article.title.split(' ')) + len(article.content.split(' '))
-
-    # ssrc of article
-    ssrc = 0
-
-    for (word_of_interest, reference) in pointers:
-        p_value = parameters[reference][1:] # weights in categories.
-        # When word appears in title is given more value
-        apparitions = (article.title.lower().count(word_of_interest) * 3) + article.content.lower().count(word_of_interest)
-        # Normalization on word count
-        apparitions /= words
-        # ssrc
-        ssrc_increment = 0
-        for v in p_value:
-            ssrc_increment += (v/5) * apparitions
-        ssrc += (ssrc_increment)
-    
-    article.ssrc = ssrc
-
-def ssrc_news2(article : News, parameters, pointers = None, apparitions = None):
-
-    if pointers == None:
-        pointers = synonyms_pointer2(parameters)
-
+    # get all list of apparitions
     if apparitions == None:
         apparitions = create_counter(parameters)
 
-    fullTitle = article.title.lower().replace(',','').replace('.','').replace(':','')
-    fullContent = article.content.lower().replace(',','').replace('.','').replace(':','')
+    # all title, description and content
+    total = []
 
-    total = fullTitle.split() + fullContent.split()
+    # remove all ',' and '.' and ':' from news to help on
+    if isinstance(article.title, str):
+        fullTitle = article.title.lower().replace(',','').replace('.','').replace(':','')
+        total += fullTitle.split()
 
+    if isinstance(article.description, str):
+        fullDescription = article.description.lower().replace(',','').replace('.','').replace(':','')
+        total += fullDescription.split()
 
-    f = open('teste.txt', 'w')
-    for word in total:
-        f.write(word + ' ')
-        if word in pointers:
-            apparitions[pointers[word]] += 1
+    if isinstance(article.content, str):
+        fullContent = article.content.lower().replace(',','').replace('.','').replace(':','')
+        total += fullContent.split()
 
-    f.close()
-    print('\n\n\n\n')
-    print('titulo = ' + fullTitle)
-    print('content = ' + fullContent)
-    print('aids apareceu %i vezes' %apparitions['aids'])
+    totalSize = len(total)
 
-
+    # counts quantity of terms apparition
+    for i in range(totalSize):
+        word = total[i]
+        for size in range(5):
+            if i + size + 1 == totalSize:
+                break
+            if word in pointers:
+                apparitions[pointers[word]] += 1
+            word += ' ' + total[i + size + 1]
 
     # amount of words in the article, for normalization purposes
     words = len(article.title.split(' ')) + len(article.content.split(' '))
@@ -120,15 +89,18 @@ def ssrc_news2(article : News, parameters, pointers = None, apparitions = None):
     # ssrc of article
     ssrc = 0
 
+
     for reference,apparition in apparitions.items():
-        p_value = parameters[reference][1:] # weights in categories.
-        
+        # weights in categories.
+        p_value = parameters[reference][1:]
+        # normalization on word count
         apparitions[reference] /= words
-        
+        # get sum of score from all areas
         ssrc_increment = 0
-        
+
         for v in p_value:
             ssrc_increment += (v/5) * apparition
         
         ssrc += (ssrc_increment)
+
     return ssrc
