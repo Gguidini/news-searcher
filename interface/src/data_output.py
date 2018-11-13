@@ -50,16 +50,17 @@ def add_table(output, table):
     paragraph = output.add_paragraph() # Create a new paragraph to hold the table
     paragraph._p.addnext(table) # After that, we add the previously copied table
 
-def add_style(doc, style_name, font_family, font_size, rgb):
+def add_style(doc, style_name, font_family, font_size, rgb, style_type=WD_STYLE_TYPE.CHARACTER, bold=False):
     """
     Creates a new style to be applyed to objects.
     Returns style name.
     """
     obj_styles = doc.styles
-    obj_charstyle = obj_styles.add_style(style_name, WD_STYLE_TYPE.CHARACTER)
+    obj_charstyle = obj_styles.add_style(style_name, style_type)
     obj_font = obj_charstyle.font
     obj_font.size = Pt(font_size)
     obj_font.name = font_family
+    obj_font.bold = bold
     obj_font.color.rgb = RGBColor(rgb[0], rgb[1], rgb[2])
     return style_name
 
@@ -99,6 +100,26 @@ def format_table(table, article):
     # thumbnail not working yet
     thumbnail.add_run('tiny img')
 
+def add_centered_img(doc, path, width):
+    """
+    Adds a new picture to doc, centered.
+    """
+    doc.add_picture(path, width=width)
+    footer_img = doc.paragraphs[-1] # last paragraph, aka the picture
+    footer_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+def add_footer(doc):
+    """
+    Adds the clipping's footer.
+    """
+    doc.add_picture('interface/src/assets/sala_logo.png', width=Cm(2))
+    footer_img = doc.paragraphs[-1] # last paragraph, aka the picture
+    footer_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    people_involved = ['Elaboração', 'Tradução', 'Equipe Editorial', 'Revisão']
+    for person in people_involved:
+        par = doc.add_paragraph(person, style='footerStyle')
+        par.bold = True
+        par.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 def create_docx(articles, path_to_output):
     """
@@ -107,11 +128,17 @@ def create_docx(articles, path_to_output):
     output_name = 'Clipping_' + datetime.date.today().strftime('%a_%d%b%Y')
     output = Document()
 
-    # Create styles
+    # Adds region bars centered
+    add_centered_img(output, 'interface/src/assets/brasil_bar.png', output.sections[0].page_width)
+    add_centered_img(output, 'interface/src/assets/mundo_bar.png', output.sections[0].page_width)
+
+    # Create character styles
     add_style(output, 'regionStyle', 'PT Sans', 14, DARK_GRAY)
     add_style(output, 'titleStyle', 'PT Sans', 14, BLACK)
     add_style(output, 'textStyle', 'PT Sans', 12, BLACK)
     add_style(output, 'urlStyle', 'PT Sans', 8, DARK_GRAY)
+    # Paragraph style
+    add_style(output, 'footerStyle', 'PT Sans', 10, BLACK, WD_STYLE_TYPE.PARAGRAPH, True)
 
     # Expand margins
     change_margins(output, 1)
@@ -125,7 +152,8 @@ def create_docx(articles, path_to_output):
         table = output.tables[idx]
         format_table(table, article)
 
-    # Maybe add extra stuff later
+    # Footer
+    add_footer(output)
 
     # Save doc
     path = Path(path_to_output) / (output_name + '.docx')
