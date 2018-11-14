@@ -68,12 +68,6 @@ def result(request):
         results += r
     # set quantity of news
     data['size'] = size
-    # calculate news score
-    for i in range (len(results)):
-        nota = score_handler.ssrc_news(results[i],data['valid_terms'])
-        scores.append((-nota,i))
-    # sort by score
-    scores.sort()
     # insert sorted news
     data['results'] = sorted(results, reverse = True)
     
