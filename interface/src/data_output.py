@@ -4,16 +4,16 @@ parses data to the correct output format.
 """
 # No integration with News BD yet
 
-import io # image from url
-import copy # Table extraction
-import requests # Picture recover from url
+import copy  # Table extraction
 import datetime
+import io  # image from url
+from pathlib import Path  # multiplatform integration
+import requests  # Picture recover from url
 
-from pathlib import Path # multiplatform integration
-from docx import Document   # Accessing and creating documents
-from docx.shared import Pt, Cm, RGBColor  # Image and font sizes
-from docx.enum.text import WD_ALIGN_PARAGRAPH # paragraph alignment
-from docx.enum.style import WD_STYLE_TYPE # style types
+from docx import Document  # Accessing and creating documents
+from docx.enum.style import WD_STYLE_TYPE  # style types
+from docx.enum.text import WD_ALIGN_PARAGRAPH  # paragraph alignment
+from docx.shared import Cm, Pt, RGBColor  # Image and font sizes
 
 # Docx Output
 
@@ -89,13 +89,22 @@ def format_table(table, article):
     region.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    region.add_run('Região Desconhecida', style='regionStyle').bold = True 
-    title.add_run(article.title, style='titleStyle').bold = True 
-    description.add_run(article.description, style='textStyle')
-    url.add_run(article.url, style='urlStyle')
+    # Security checks
+    art_reg = (article.region if isinstance(article.region, str) else "Região da Notícia")
+    art_title = (article.title if isinstance(article.title, str) else "Título da Notícia")
+    art_description = (article.description if isinstance(article.description, str) else "Descrição da Notícia")
+    art_url = (article.title if isinstance(article.url, str) else "URL da Noticia")
 
-    pic = img_from_url(article.url_to_image)
-    img.add_run().add_picture(pic, width=Cm(6), height=Cm(5))
+    # Text info
+    region.add_run(art_reg, style='regionStyle').bold = True 
+    title.add_run(art_title, style='titleStyle').bold = True 
+    description.add_run(art_description, style='textStyle')
+    url.add_run(art_url, style='urlStyle')
+
+    # Image info
+    if isinstance(article.url_to_image, str):
+        pic = img_from_url(article.url_to_image)
+        img.add_run().add_picture(pic, width=Cm(6), height=Cm(5))
 
     # thumbnail not working yet
     thumbnail.add_run('tiny img')
@@ -112,7 +121,8 @@ def add_footer(doc):
     """
     Adds the clipping's footer.
     """
-    doc.add_picture('interface/src/assets/sala_logo.png', width=Cm(2))
+    path_to_img = os.path.join('interface', 'src', 'assets', 'sala_logo.png')
+    doc.add_picture(path_to_img, width=Cm(2))
     footer_img = doc.paragraphs[-1] # last paragraph, aka the picture
     footer_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
     people_involved = ['Elaboração', 'Tradução', 'Equipe Editorial', 'Revisão']
@@ -129,8 +139,9 @@ def create_docx(articles, path_to_output):
     output = Document()
 
     # Adds region bars centered
-    add_centered_img(output, 'interface/src/assets/brasil_bar.png', output.sections[0].page_width)
-    add_centered_img(output, 'interface/src/assets/mundo_bar.png', output.sections[0].page_width)
+    path = os.path.join('interface', 'src', 'assets')
+    add_centered_img(output, os.path.join(path, 'brasil_bar.png'), (output.sections[0].page_width * 0.8))
+    add_centered_img(output, os.path.join(path, 'mundo_bar.png'), (output.sections[0].page_width * 0.8))
 
     # Create character styles
     add_style(output, 'regionStyle', 'PT Sans', 14, DARK_GRAY)
