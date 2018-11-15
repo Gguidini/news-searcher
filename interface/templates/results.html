@@ -9,7 +9,18 @@
         .container {
             display: inline;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
+    <script>
+        function showField(id) {
+            f = document.getElementById(id);
+            f.value = "Região da Notícia"
+            f.classList.toggle('hidden')
+        }
+    </script>
 </head>
 <body>
     <h3>Notícias Encontradas: {{size}}</h3>
@@ -21,7 +32,8 @@
             <h4>Score - {{result.score}}</h4>
             <div class="container">
                 <div>
-                    <input checked type="checkbox" name="valid_result" value="{{ result }}">
+                    <input type="checkbox" name="valid_result" value="{{ result }}" onclick="showField('region_{{ result.title }}')">
+                    <input id="region_{{result.title}}"   type="text" name="region_{{result.title}}" value="Região da Notícia" class="hidden">
                 </div>
                 <div>
                     <p>{{result.description}}</p>
@@ -33,7 +45,7 @@
             </div>
 
             <br>
-            <button type="submit">Gerar Clipping</button>
+            <button type="submit" onclick="confirmSubmit()">Gerar Clipping</button>
         </form>
     </ul>
     <button onclick="location.href = '{% url 'url_index' %}' ">Voltar</button>

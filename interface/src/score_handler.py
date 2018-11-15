@@ -84,7 +84,10 @@ def score_news(article : News, parameters, pointers = None, apparitions = None):
             word += ' ' + total[i + size + 1]
 
     # amount of words in the article, for normalization purposes
-    words = len(article.title.split(' ')) + len(article.content.split(' '))
+    if isinstance(article.title, str) and isinstance(article.content, str):
+        words = len(article.title.split(' ')) + len(article.content.split(' '))
+    else:
+        words = 10000 # Large value so articles without title or content receive smaller scores
 
     # score of article
     score = 0
