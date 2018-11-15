@@ -69,9 +69,11 @@ def result(request):
     # set quantity of news
     data['size'] = size
     # insert sorted news
+    for n in results:
+        score_handler.score_news(n, data['valid_terms'])
+        
     data['results'] = sorted(results, reverse = True)
     
-
     # Uncomment to test production of docx file
     # File will be saved in docs/ with name clipping + today's date
     #output.create_docx(results, 'docs/')

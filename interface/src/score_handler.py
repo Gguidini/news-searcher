@@ -1,5 +1,5 @@
 """
-This module calculates News ssrcs and updates each News with its ssrc.
+This module calculates News scores and updates each News with its score.
 """
 import functools
 from interface.src.models import News
@@ -12,7 +12,7 @@ def synonyms_pointer(parameters):
 
     Arguments>
     > paramenters : dict
-        The dictionary with terms of interest, their synonyms, and their weight ssrc.
+        The dictionary with terms of interest, their synonyms, and their weight score.
     """
 
     pointers = {}
@@ -28,10 +28,10 @@ def create_counter(parameters):
     return  {key: 0 for key in parameters}
 
 
-def ssrc_news(article : News, parameters, pointers = None, apparitions = None):
+def score_news(article : News, parameters, pointers = None, apparitions = None):
     """
-    Given a news article, calculates its ssrc and updates it.
-    The ssrc is calculated has follows:
+    Given a news article, calculates its score and updates it.
+    The score is calculated has follows:
     1. Every word of interest has weights assigned to it, considering different categories.
     2. The number of times a word of interest appears in the content or title of an article is computed.
     3. The weighted average is calculated, considering the total points a words can receive:
@@ -39,11 +39,11 @@ def ssrc_news(article : News, parameters, pointers = None, apparitions = None):
         a is the number of times word was found / number of words in article,
         w[i] is weight for ith category,
         5 is the maximum weight points for a category,
-    4. The resulting ssrc is added to the article's ssrc.
+    4. The resulting score is added to the article's score.
 
     Arguments:
     > article : News
-        The article to be ssrcd
+        The article to be scored
     > parameters : dict
         The dictionary with the terms of interest and their weights in each category.
     """
@@ -86,8 +86,8 @@ def ssrc_news(article : News, parameters, pointers = None, apparitions = None):
     # amount of words in the article, for normalization purposes
     words = len(article.title.split(' ')) + len(article.content.split(' '))
 
-    # ssrc of article
-    ssrc = 0
+    # score of article
+    score = 0
 
 
     for reference,apparition in apparitions.items():
@@ -96,11 +96,11 @@ def ssrc_news(article : News, parameters, pointers = None, apparitions = None):
         # normalization on word count
         apparitions[reference] /= words
         # get sum of score from all areas
-        ssrc_increment = 0
+        score_increment = 0
 
         for v in p_value:
-            ssrc_increment += (v/5) * apparition
+            score_increment += (v/5) * apparition
         
-        ssrc += (ssrc_increment)
+        score += (score_increment)
 
-    article.set_score(ssrc)
+    article.set_score(score)

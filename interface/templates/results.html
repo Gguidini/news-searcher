@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .container {
+            display: inline;
+        }
+    </style>
 </head>
 <body>
     <h3>Notícias Encontradas: {{size}}</h3>
@@ -13,12 +18,21 @@
             {% csrf_token %}
             {% for result in results %}
             <h2>{{result.title}}</h2>
-            <input checked type="checkbox" name="valid_result" value="{{ result }}">
-            <p>{{result.description}}</p>
-            <img src="{{ result.url_to_image }}" alt="Imagem do result" style="width: 100px; height: 100px;">
+            <h4>Score - {{result.score}}</h4>
+            <div class="container">
+                <div>
+                    <input checked type="checkbox" name="valid_result" value="{{ result }}">
+                </div>
+                <div>
+                    <p>{{result.description}}</p>
+                    <img src="{{ result.url_to_image }}" alt="Imagem do result" style="width: 100px; height: 100px;">
+                    <br>
+                    <a href="{{ result.url }}">{{ result.url }}}</a>
+                    {% endfor%}
+                </div>
+            </div>
+
             <br>
-            <a href="{{ result.url }}">{{ result.url }}}</a>
-            {% endfor%}
             <button type="submit">Gerar Clipping</button>
         </form>
     </ul>
