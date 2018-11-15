@@ -20,4 +20,5 @@ urlpatterns = [
     path('', views.index, name='url_index'),
     path('settings/', views.settings, name='url_settings'),
     path('results/', views.result, name='url_results'),
+    path('output/', views.output, name='url_output')
 ]

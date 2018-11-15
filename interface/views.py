@@ -1,9 +1,13 @@
-from django.shortcuts import render
-import interface.src.data_output as output
+
+import pickle
+import os
+import interface.src.data_output as data_output
 import interface.src.news_handler as news_handler
 import interface.src.score_handler as score_handler
+import interface.src.config as config
+
+from django.shortcuts import render
 from interface.src.config import API_KEY, SOURCES, TERMS
-from interface.src.config import updateKey, addSource, addTerm, removeSource, removeTerm
 
 
 def index(request):
@@ -25,13 +29,13 @@ def settings(request):
     if request.method == 'POST':
         # faz o update da chave da API
         if 'api' in request.POST:
-            updateKey(request.POST.get("api"))
+            config.updateKey(request.POST.get("api"))
         # adiciona uma nova source ao arquivo
         elif 'source' in request.POST and request.POST.get("source") not in SOURCES:
-            addSource(request.POST.get("source"))
+            config.addSource(request.POST.get("source"))
         # remove uma fonte do arquivo
         elif 'delete_source' in request.POST:
-            removeSource(request.POST.get("delete_source"))
+            config.removeSource(request.POST.get("delete_source"))
         # adiciona um novo termo ao arquivo
         elif 'term' in request.POST and request.POST.get("term") not in TERMS:
             term = request.POST.get("term").lower()
@@ -43,10 +47,10 @@ def settings(request):
             i = request.POST.get("impact")
             s = request.POST.get("severity")
             c = request.POST.get("current")
-            addTerm(term, sinonimo, t, p, e, d, i, s, c)
+            config.addTerm(term, sinonimo, t, p, e, d, i, s, c)
         # remove um termo do arquivo
         elif 'delete_term' in request.POST:
-            removeTerm(request.POST.get("delete_term"))
+            config.removeTerm(request.POST.get("delete_term"))
         
     return render(request, 'settings.html', {'key':API_KEY, 'sources':SOURCES, 'terms':TERMS})
 
@@ -54,38 +58,59 @@ def result(request):
     """
     Displays search results.
     """
-    data = {}
-    if request.method == 'GET':
-        valid_terms = request.GET.getlist("valid_term")
-        valid_sources = request.GET.getlist("valid_source")
-
-    # select only the valid terms
+    valid_terms = request.GET.getlist("valid_term")
+    valid_sources = request.GET.getlist("valid_source")
+    # Get all info on terms of interest
     valid_terms = { term: TERMS.get(term) for term in valid_terms }
-    
-    # get the initialized api client 
+    # Initialize API Client, of redirect to error page 
     client = news_handler.api_client(API_KEY)
     if client == None:
         return render(request, 'key_error.html', {})
-    # store all news to send to data['results']
+    # List of News and size of response
     results = []
-    # quantity of news
     size = 0
-    # search for all terms in all sources
+    # search for all valid terms in all valid sources
     for term in valid_terms:
         s, r = news_handler.get_query_articles(client, term, valid_sources)
         size += s
         results += r
-
-    # insert sorted news
-    if size > 0:
-        for n in results:
-            score_handler.score_news(n, valid_terms)
-
+    # Sort News
+    for n in results:
+        score_handler.score_news(n, valid_terms)
+    # News sorted by score
     results = sorted(results, reverse = True)
-    
-    # Uncomment to test production of docx file
-    # File will be saved in interface/tmp/ with name clipping + today's date
-    #output.create_docx(results, 'interface/tmp/')
+    # Save News temporarily to await selection
+    pickle.dump(results, open(os.path.join('interface', 'tmp', 'latest_news.bin'), 'wb'))
     
     return render(request, 'results.html', {'size':size, 'results':results})
 
+def clear_tmp_folder():
+    """
+    Delete all .docx files in the tmp directory.
+    """
+    tmp = os.path.join('interface', 'tmp')
+    for f in os.listdir(tmp):
+        if f.endswith('.docx'):
+            os.remove(os.path.join(tmp, f))
+
+def output(request):
+    """
+    Creates the docx document and pushes selected News to database.
+    """
+    all_news = pickle.load(open(os.path.join('interface', 'tmp', 'latest_news.bin'), 'rb'))
+    valid_results = request.POST.getlist('valid_result')
+    valid_news = []
+    # Separate only valid news
+    for n in all_news:
+        if n.title in valid_results:
+            n.region = request.POST.get('region_{}'.format(n.title))
+            valid_news.append(n)
+
+    # DB connection should go here
+
+    # Remove any previous clipping to avoid cluttering
+    clear_tmp_folder()
+    # New clipping will be saved in interface/tmp/ with name clipping + today's date
+    out = data_output.create_docx(valid_news, 'interface/tmp/')
+
+    return render(request, 'output.html', {'news':valid_news, 'size':len(valid_news), 'file':out})

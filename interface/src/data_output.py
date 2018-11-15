@@ -7,6 +7,7 @@ parses data to the correct output format.
 import copy  # Table extraction
 import datetime
 import io  # image from url
+import os # multiplatform integration
 from pathlib import Path  # multiplatform integration
 import requests  # Picture recover from url
 

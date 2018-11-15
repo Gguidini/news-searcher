@@ -12,7 +12,13 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        {{news}}
-        {{regions}}
+        <h2>Clipping gerado.</h2>
+        <h3>Notícias selecionadas: {{size}}</h3>
+        <button><a href="{{file}}" download="{{file}}">Baixar Clipping</a></button>
+
+        <h3>Notícias:</h3>
+        {% for n in news %}
+        <h4>{{n.title}}</h4>
+        {% endfor %}
     </body>
 </html>

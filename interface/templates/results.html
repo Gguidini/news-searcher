@@ -25,7 +25,7 @@
 <body>
     <h3>Notícias Encontradas: {{size}}</h3>
     <ul>
-        <form action="" method="post">
+        <form action="{% url 'url_output'%}" method="post">
             {% csrf_token %}
             {% for result in results %}
             <h2>{{result.title}}</h2>
@@ -33,7 +33,7 @@
             <div class="container">
                 <div>
                     <input type="checkbox" name="valid_result" value="{{ result }}" onclick="showField('region_{{ result.title }}')">
-                    <input id="region_{{result.title}}"   type="text" name="region_{{result.title}}" value="Região da Notícia" class="hidden">
+                    <input id="region_{{result.title}}"   type="text" name="region_{{result.title}}" placeholder="Região da Notícia" class="hidden">
                 </div>
                 <div>
                     <p>{{result.description}}</p>
