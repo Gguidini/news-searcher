@@ -39,7 +39,8 @@ def settings(request):
         # adiciona um novo termo ao arquivo
         elif 'term' in request.POST and request.POST.get("term") not in TERMS:
             term = request.POST.get("term").lower()
-            sinonimo = request.POST.get("sinonimo").lower()
+            sinonimos = request.POST.get('sinonimo').lower()
+            sinonimos = sinonimos.split("\r\n")
             t = request.POST.get("tech")
             p = request.POST.get("politics")
             e = request.POST.get("economics")
@@ -47,7 +48,7 @@ def settings(request):
             i = request.POST.get("impact")
             s = request.POST.get("severity")
             c = request.POST.get("current")
-            config.addTerm(term, sinonimo, t, p, e, d, i, s, c)
+            config.addTerm(term, sinonimos, t, p, e, d, i, s, c)
         # remove um termo do arquivo
         elif 'delete_term' in request.POST:
             config.removeTerm(request.POST.get("delete_term"))

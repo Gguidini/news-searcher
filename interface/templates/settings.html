@@ -38,6 +38,32 @@
             .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
             .tg .tg-baqh{text-align:center;vertical-align:top}
             .tg .tg-0lax{text-align:left;vertical-align:top}
+            /* Tooltip container */
+            .tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+            }
+
+            /* Tooltip text */
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+            
+                /* Position the tooltip text - see examples below! */
+                position: absolute;
+                z-index: 1;
+            }
+
+            /* Show the tooltip text when you mouse over the tooltip container */
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
     </style>
         <table class="tg">
             <tr>
@@ -70,7 +96,9 @@
             {% csrf_token %}
             <tr>
             <td class="tg-0lax"> <input type="text" name="term" placeholder="termo"> </td>
-            <td class="tg-0lax"> <input type="text" name="sinonimo" placeholder="sinonimo"> </td>
+            <td class="tg-0lax"> 
+                <textarea name="sinonimo" placeholder="sinonimos separados por ENTER"></textarea>>
+            </td>
             <td class="tg-0lax"> <input type="number" min="0" max="5" name="tech" value="0"></td>
             <td class="tg-0lax"> <input type="number" min="0" max="5" name="politics" value="0"></td>
             <td class="tg-0lax"> <input type="number" min="0" max="5" name="economics"value="0"></td>

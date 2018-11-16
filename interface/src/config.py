@@ -49,7 +49,7 @@ def removeSource(source):
 
 # adicionar um novo termo
 def addTerm(term, sinonimos, t, p, e, d, i, s, c):
-    TERMS[str(term)] = [[sinonimos], int(t), int(p), int(e), int(d), int(i), int(s), int(c)]
+    TERMS[str(term)] = [sinonimos, int(t), int(p), int(e), int(d), int(i), int(s), int(c)]
     pickle.dump(TERMS, open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "wb"))
     return TERMS
 
