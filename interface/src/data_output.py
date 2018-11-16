@@ -19,7 +19,7 @@ from docx.shared import Cm, Pt, RGBColor  # Image and font sizes
 # Docx Output
 
 # template document name
-ORIGIN = Path('interface/src/assets/template.docx')
+ORIGIN = os.path.join('interface', 'src', 'assets', 'template.docx')
 
 # colors RGB values
 DARK_GRAY = [0x68, 0x68, 0x68]
