@@ -18,7 +18,10 @@
 
         <h3>Notícias:</h3>
         {% for n in news %}
+        <!-- Título das notícias para referencia -->
         <h4>{{n.title}}</h4>
         {% endfor %}
+
+        <button onclick="location.href='{% url 'url_index' %}'">Início</button>
     </body>
 </html>

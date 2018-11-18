@@ -17,7 +17,7 @@
     <script>
         function showField(id) {
             f = document.getElementById(id);
-            f.value = "Região da Notícia"
+            f.placeholder = "Região da Notícia"
             f.classList.toggle('hidden')
         }
     </script>
@@ -25,6 +25,7 @@
 <body>
     <h3>Notícias Encontradas: {{size}}</h3>
     <ul>
+        <!-- Formulario de seleção das notícias que irão para o clipping -->
         <form action="{% url 'url_output'%}" method="post">
             {% csrf_token %}
             {% for result in results %}
@@ -32,8 +33,9 @@
             <h4>Score - {{result.score}}</h4>
             <div class="container">
                 <div>
-                    <input type="checkbox" name="valid_result" value="{{ result }}" onclick="showField('region_{{ result.title }}')">
-                    <input id="region_{{result.title}}"   type="text" name="region_{{result.title}}" placeholder="Região da Notícia" class="hidden">
+                    <input type="checkbox" name="valid_result" value="{{ result }}" onclick="showField('region_{{ result.title|safe }}')">
+                    <!-- Campo para inserção da região da notícia aparece se a notícia for selecionada -->
+                    <input id="region_{{result.title|safe}}"   type="text" name="region_{{result.title|safe}}" placeholder="Região da Notícia" class="hidden">
                 </div>
                 <div>
                     <p>{{result.description}}</p>

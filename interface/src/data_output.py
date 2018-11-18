@@ -1,14 +1,17 @@
 """
 This module integrates the system with other systems and 
 parses data to the correct output format.
+
+Selected News from search are pushed to News DB,
+and formatted into a docx document for further editing by hand.
 """
 # No integration with News BD yet
 
 import copy  # Table extraction
-import datetime
+import datetime # docx name
 import io  # image from url
-import os # multiplatform integration
-from pathlib import Path  # multiplatform integration
+import os # multiplatform integration - paths
+from pathlib import Path  # multiplatform integration - paths
 import requests  # Picture recover from url
 
 from docx import Document  # Accessing and creating documents
@@ -16,18 +19,22 @@ from docx.enum.style import WD_STYLE_TYPE  # style types
 from docx.enum.text import WD_ALIGN_PARAGRAPH  # paragraph alignment
 from docx.shared import Cm, Pt, RGBColor  # Image and font sizes
 
-# Docx Output
+# Docx Output =================================
 
-# template document name
+# template document path
 ORIGIN = os.path.join('interface', 'src', 'assets', 'template.docx')
 
 # colors RGB values
 DARK_GRAY = [0x68, 0x68, 0x68]
 BLACK = [0, 0, 0]
 
-def img_from_url(url):
+def img_from_url(url : str):
     """
-    Returns a binary image from a url
+    Returns a binary image from a url.
+    
+    argument:
+    > url - string
+        url to News image. News.url_to_image.
     """
     response = requests.get(url)  
     # Create the picture
@@ -36,7 +43,12 @@ def img_from_url(url):
 
 def get_template_table(origin):
     """
-    Gives a copy of the template table in origin file
+    Gives a true copy of the template table in ORIGIN file.
+    Template table created by Sala de Situação's team.
+    
+    argument:
+    > origin - string
+        path to ORIGIN file.
     """
     template = Document(origin)
     # Extract template table
@@ -46,6 +58,13 @@ def get_template_table(origin):
 def add_table(output, table):
     """
     Adds a table to output file.
+
+    arguments:
+    > output : Document()
+        A docx document to put the table into.
+    
+    > table : Table()
+        A Table object that will be inserted in output.
     """
     table = table._tbl # No idea. Just works
     paragraph = output.add_paragraph() # Create a new paragraph to hold the table
@@ -55,6 +74,24 @@ def add_style(doc, style_name, font_family, font_size, rgb, style_type=WD_STYLE_
     """
     Creates a new style to be applyed to objects.
     Returns style name.
+
+    arguments:
+    > doc : Document
+        Styles are bound to Documents. The Document to add the style.
+    > style_name : str
+        Any name that will reference this style later.
+    > font_family : str
+        The font family. Must be a font that exists in Word.
+    > font_size : int
+        The font size
+    > rgb : Tuple[int, int, int]
+        Font color, in RGB format.
+    > style_type
+        Whether the style is to be applied to runs or paragraphs. Default is run.
+        WD_STYLE_TYPE.CHARACTER -> runs
+        WD_STYLE_TYPE.PARAGRAPH -> paragraphs
+    > bold : bool
+        Whether style is bolded or not.
     """
     obj_styles = doc.styles
     obj_charstyle = obj_styles.add_style(style_name, style_type)
@@ -68,6 +105,12 @@ def add_style(doc, style_name, font_family, font_size, rgb, style_type=WD_STYLE_
 def change_margins(doc, margin):
     """
     Changes margins of a document to specific size.
+
+    arguments:
+    > doc : Document
+        Document to modify
+    > margin : int
+        Size of margin, in centimeters. All margin will have the same size.
     """
     sections = doc.sections
     for section in sections:
@@ -79,6 +122,7 @@ def change_margins(doc, margin):
 def format_table(table, article):
     """
     Populates the table correctly from article.
+    Follows table template from ORIGIN document.
     """
     region = table.cell(0, 2).paragraphs[0]
     title = table.cell(1, 1).paragraphs[0]
@@ -103,16 +147,25 @@ def format_table(table, article):
     url.add_run(art_url, style='urlStyle')
 
     # Image info
-    if isinstance(article.url_to_image, str):
+    try:
         pic = img_from_url(article.url_to_image)
         img.add_run().add_picture(pic, width=Cm(6), height=Cm(5))
+    except:
+        img.add_run("Image not found")
 
     # thumbnail not working yet
-    thumbnail.add_run('tiny img')
+    thumbnail.add_run('Image not found')
 
 def add_centered_img(doc, path, width):
     """
     Adds a new picture to doc, centered.
+    Picture must exist in the computer.
+
+    arguments:
+    > doc : Document
+        Document to modify
+    > path
+        Path to image
     """
     doc.add_picture(path, width=width)
     footer_img = doc.paragraphs[-1] # last paragraph, aka the picture
@@ -121,6 +174,7 @@ def add_centered_img(doc, path, width):
 def add_footer(doc):
     """
     Adds the clipping's footer.
+    Copied from clipping template provided by Sala de Situação.
     """
     path_to_img = os.path.join('interface', 'src', 'assets', 'sala_logo.png')
     doc.add_picture(path_to_img, width=Cm(2))
@@ -135,6 +189,7 @@ def add_footer(doc):
 def create_docx(articles, path_to_output):
     """
     Creates a docx file with tables for each of the article in articles.
+    Follows template provided by Sala de Situação.
     """
     output_name = 'Clipping_' + datetime.date.today().strftime('%a_%d%b%Y')
     output = Document()
@@ -160,7 +215,6 @@ def create_docx(articles, path_to_output):
         add_table(output, get_template_table(ORIGIN))
     # Populate tables
     for idx, article in enumerate(articles):
-        print(idx)
         table = output.tables[idx]
         format_table(table, article)
 
