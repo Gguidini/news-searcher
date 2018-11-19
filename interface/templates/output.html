@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -14,8 +15,11 @@
     <body>
         <h2>Clipping gerado.</h2>
         <h3>Notícias selecionadas: {{size}}</h3>
-        <button><a href="{{file}}" download="{{file}}">Baixar Clipping</a></button>
+        <button><a href="{% static 'tmp/' %}{{file}}" download="{{file}}">Baixar Clipping</a></button>
 
+        {% for e in error %}
+        <h4>{{ e }}</h4>
+        {% endfor %}
         <h3>Notícias:</h3>
         {% for n in news %}
         <!-- Título das notícias para referencia -->

@@ -89,7 +89,7 @@ def clear_tmp_folder():
     """
     Delete all .docx files in the tmp directory.
     """
-    tmp = os.path.join('interface', 'tmp')
+    tmp = os.path.join('interface', 'static', 'tmp')
     for f in os.listdir(tmp):
         if f.endswith('.docx'):
             os.remove(os.path.join(tmp, f))
@@ -98,7 +98,7 @@ def output(request):
     """
     Creates the docx document and pushes selected News to database.
     """
-    all_news = pickle.load(open(os.path.join('interface', 'tmp', 'latest_news.bin'), 'rb'))
+    all_news = pickle.load(open(os.path.join('interface', 'src', 'bins', 'latest_news.bin'), 'rb'))
     valid_results = request.POST.getlist('valid_result')
     valid_news = []
     # Separate only valid news
@@ -107,11 +107,18 @@ def output(request):
             n.region = request.POST.get('region_{}'.format(n.title))
             valid_news.append(n)
 
-    # DB connection should go here
+    # Connection with database
+    errors = [] # records if news can't go to DB.
+    for n in valid_news:
+        err = data_output.push_to_DB(n)
+        if err.text == 'Fail':
+            errors.append('ERRO adicionando notícia {}'.format(n.title))
 
+    if errors == []:
+        errors = ['Todas as notícias foram adicionadas ao Banco de Dados!']
     # Remove any previous clipping to avoid cluttering
     clear_tmp_folder()
     # New clipping will be saved in interface/tmp/ with name clipping + today's date
-    out = data_output.create_docx(valid_news, 'interface/tmp/')
+    out = data_output.create_docx(valid_news, os.path.join('interface', 'static', 'tmp'))
 
-    return render(request, 'output.html', {'news':valid_news, 'size':len(valid_news), 'file':out})
+    return render(request, 'output.html', {'news':valid_news, 'size':len(valid_news), 'file':out, 'error':errors})

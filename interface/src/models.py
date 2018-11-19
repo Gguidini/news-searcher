@@ -66,7 +66,7 @@ class News:
             'region' : self.region,
             'country' : self.country
         }
-        return json.dumps(dictionary)
+        return json.dumps(dictionary, ensure_ascii=False).encode('utf8')
 
     @classmethod
     def from_json(cls, json):

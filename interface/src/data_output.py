@@ -5,7 +5,6 @@ parses data to the correct output format.
 Selected News from search are pushed to News DB,
 and formatted into a docx document for further editing by hand.
 """
-# No integration with News BD yet
 
 import copy  # Table extraction
 import datetime # docx name
@@ -18,6 +17,17 @@ from docx import Document  # Accessing and creating documents
 from docx.enum.style import WD_STYLE_TYPE  # style types
 from docx.enum.text import WD_ALIGN_PARAGRAPH  # paragraph alignment
 from docx.shared import Cm, Pt, RGBColor  # Image and font sizes
+
+# News DB Output ==============================
+def push_to_DB(article):
+    """
+    Transforms a News article into a json object,
+    inserts object in the News data base.
+    ps.: database is not part of this system.
+    """
+    url = 'https://sala-de-situacao-bd.herokuapp.com/insert'
+    response = requests.get(url, params={'json':article.to_json(), 'key':'baduba'})
+    return response
 
 # Docx Output =================================
 
@@ -224,4 +234,4 @@ def create_docx(articles, path_to_output):
     # Save doc
     path = Path(path_to_output) / (output_name + '.docx')
     output.save(path)
-    return path
+    return output_name + '.docx'
