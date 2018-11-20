@@ -7,7 +7,15 @@ import interface.src.score_handler as score_handler
 import interface.src.config as config
 
 from django.shortcuts import render
-from interface.src.config import API_KEY, SOURCES, TERMS
+from interface.src.config import SOURCES, TERMS
+
+
+def API_KEY():
+    """
+    Load the API KEY from file
+    so Django cache doens't pick the wrong one 
+    """
+    return pickle.load(open(os.path.join("interface", "src", "bins", "api-key.bin"), "rb"))
 
 
 def index(request):
@@ -51,9 +59,8 @@ def settings(request):
             config.addTerm(term, sinonimos, t, p, e, d, i, s, c)
         # remove um termo do arquivo
         elif 'delete_term' in request.POST:
-            config.removeTerm(request.POST.get("delete_term"))
-        
-    return render(request, 'settings.html', {'key':API_KEY, 'sources':SOURCES, 'terms':TERMS})
+            config.removeTerm(request.POST.get("delete_term"))    
+    return render(request, 'settings.html', {'key': API_KEY(), 'sources':SOURCES, 'terms':TERMS})
 
 def result(request):
     """
@@ -64,7 +71,7 @@ def result(request):
     # Get all info on terms of interest
     valid_terms = { term: TERMS.get(term) for term in valid_terms }
     # Initialize API Client, of redirect to error page 
-    client = news_handler.api_client(API_KEY)
+    client = news_handler.api_client(API_KEY())
     if client == None:
         return render(request, 'key_error.html', {})
     # List of News and size of response

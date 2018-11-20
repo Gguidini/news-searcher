@@ -11,8 +11,6 @@ import os
 import pickle # uses pickle to save values
 from news_searcher.settings import BASE_DIR
 
-API_KEY = pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "api-key.bin"), "rb"))
-
 SOURCES = pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "sources.bin"), "rb"))
 
 TERMS =  pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "rb"))
@@ -35,9 +33,7 @@ def updateKey(new_key):
     Updates API KEY to new_key.
     Saves changes in pickle file.
     """
-    API_KEY = new_key
-    pickle.dump(API_KEY, open(os.path.join(BASE_DIR,"interface", "src", "bins", "api-key.bin"), "wb"))
-    return API_KEY
+    pickle.dump(new_key, open(os.path.join(BASE_DIR,"interface", "src", "bins", "api-key.bin"), "wb"))
 
 # adicionar uma fonte
 def addSource(source):
