@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
+    <title>News Searcher | Results</title>
     <style>
         .container {
             display: inline;
@@ -22,34 +24,40 @@
         }
     </script>
 </head>
-<body>
-    <h3>Notícias Encontradas: {{size}}</h3>
-    <ul>
-        <!-- Formulario de seleção das notícias que irão para o clipping -->
-        <form action="{% url 'url_output'%}" method="post">
-            {% csrf_token %}
-            {% for result in results %}
-            <h2>{{result.title}}</h2>
-            <h4>Score - {{result.score}}</h4>
-            <div class="container">
-                <div>
-                    <input type="checkbox" name="valid_result" value="{{ result.url|safe }}" onclick="showField('region_{{ result.url|safe }}')">
-                    <!-- Campo para inserção da região da notícia aparece se a notícia for selecionada -->
-                    <input id="region_{{result.url|safe}}"   type="text" name="region_{{result.url|safe}}" placeholder="Região da Notícia" class="hidden">
+<body class="w3-theme-light">
+    <h3 class="w3-container w3-text-theme">Notícias Encontradas: {{size}}</h3>
+    <!-- Formulario de seleção das notícias que irão para o clipping -->
+    <form action="{% url 'url_output'%}" method="post" class="w3-container">
+        {% csrf_token %}
+        {% for result in results %}
+            <div class="w3-card-4 w3-margin">
+                <header class="w3-container w3-theme">
+                    <h2>{{result.title}}</h2>
+                    <h4>Score: {{result.score}}</h4>
+                </header>
+                <div class="w3-container w3-white">
+                    <div class="w3-row">
+                        <input type="checkbox" name="valid_result" value="{{ result.url|safe }}" onclick="showField('region_{{ result.url|safe }}')" class="w3-check">
+                        <!-- Campo para inserção da região da notícia aparece se a notícia for selecionada -->
+                        <input id="region_{{result.url|safe}}"   type="text" name="region_{{result.url|safe}}" placeholder="Região da Notícia" class="hidden">
+                    </div>
+                    <div class="w3-row w3-margin">
+                        <div class="w3-col s4">
+                            <img src="{{ result.url_to_image }}" alt="Imagem do result" style="width: 60%;">
+                        </div>
+                        <div class="w3-col s6">
+                            <p class="w3-large">{{result.description}}</p>
+                            <a href="{{ result.url }}">{{ result.url }}}</a>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <p>{{result.description}}</p>
-                    <img src="{{ result.url_to_image }}" alt="Imagem do result" style="width: 100px; height: 100px;">
-                    <br>
-                    <a href="{{ result.url }}">{{ result.url }}}</a>
+            </div>
                     {% endfor%}
-                </div>
             </div>
 
             <br>
-            <button type="submit" onclick="confirmSubmit()">Gerar Clipping</button>
+            <button type="submit" onclick="confirmSubmit()" class="w3-bar w3-theme w3-btn w3-round w3-large">Gerar Clipping</button>
         </form>
-    </ul>
-    <button onclick="location.href = '{% url 'url_index' %}' ">Voltar</button>
+    <button onclick="location.href = '{% url 'url_index' %}' " class="w3-btn w3-theme w3-round w3-margin">Voltar</button>
 </body>
 </html>

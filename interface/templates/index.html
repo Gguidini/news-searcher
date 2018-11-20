@@ -4,23 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>News searcher | Index</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
+    <style>
+        ul {
+            width: 30%;
+        }
+    </style>
 </head>
-<body>
-    <form action="{% url 'url_results' %}" method="get">
-        <h2>termos</h2>
+<body class="w3-theme-light">
+
+    <button onclick="location.href = '{% url 'url_settings' %}' " class="w3-btn w3-theme w3-round w3-margin">Configurações</button>
+
+    <div class="w3-container">
+    <form action="{% url 'url_results' %}" method="get" class="w3-container">
+        <h2 class="w3-text-theme">Termos</h2>
+        <ul class="w3-ul w3-card-2">
         {% for term in terms %}
-        <input checked type="checkbox" name="valid_term" value="{{ term }}">{{ term }}
-        <br>
+        <li class="w3-white"> <input checked type="checkbox" name="valid_term" value="{{ term }}" class="w3-check"> {{ term }} </li>
         {% endfor %}
-        <h2>fontes</h2>
+        </ul>
+        <h2 class="w3-text-theme">Fontes</h2>
+        <ul class="w3-ul w3-card-2">
         {% for source in sources %}
-        <input checked type="checkbox" name="valid_source" value="{{ source }}">{{ source }}
-        <br>
+        <li class="w3-white"> <input checked type="checkbox" name="valid_source" value="{{ source }}" class="w3-check"> {{ source }} </li>
         {% endfor %}
-        <br>
-        <button type="submit">Buscar</button>
+        </ul>
+    
+        <button type="submit" class="w3-btn w3-theme w3-round w3-margin">Buscar</button>
     </form>
-    <button onclick="location.href = '{% url 'url_settings' %}' ">Configurações</button>
+    </div>
 </body>
 </html>

@@ -7,25 +7,37 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>News Searcher | Results</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
     </head>
-    <body>
-        <h2>Clipping gerado.</h2>
-        <h3>Notícias selecionadas: {{size}}</h3>
-        <button><a href="{% static 'tmp/' %}{{file}}" download="{{file}}">Baixar Clipping</a></button>
+    <body class="w3-theme-light">
+        <h2 class="w3-container w3-text-theme">Clipping gerado &#9786;</h2>
+        <h3 class="w3-container w3-text-theme">Notícias selecionadas: {{size}}</h3>
+
+        <div class="w3-container">
+            <button class="w3-btn w3-round w3-theme w3-xlarge"><a href="{% static 'tmp/' %}{{file}}" download="{{file}}">Baixar Clipping</a></button>
+        </div>
 
         {% for e in error %}
-        <h4>{{ e }}</h4>
-        {% endfor %}
-        <h3>Notícias:</h3>
-        {% for n in news %}
-        <!-- Título das notícias para referencia -->
-        <h4>{{n.title}}</h4>
+        <h4 class="w3-margin">{{ e }}</h4>
         {% endfor %}
 
-        <button onclick="location.href='{% url 'url_index' %}'">Início</button>
+        <h3 class="w3-container w3-text-theme">Notícias:</h3>
+        <div class="w3-container">
+
+            <ul class="w3-ul w3-card-2 w3-white">
+                {% for n in news %}
+                
+                <!-- Título das notícias para referencia -->
+                <li> <h4>{{n.title}}</h4> </li>
+                {% endfor %}
+            </ul>
+            
+        </div>
+        <button onclick="location.href='{% url 'url_index' %}'" class="w3-btn w3-theme w3-round w3-margin">Início</button>
     </body>
 </html>

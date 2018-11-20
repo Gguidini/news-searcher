@@ -4,115 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>News searcher | Settings</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <h2>Chave da API</h2>
-        <input type="text" name="api" placeholder="{{ key }}">
-        <button type="submit">Atualizar Chave</button>
-    </form>
-    <br>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <h2>Fontes</h2>
-        <ul>
-            {% for source in sources %}
-            <li>{{ source }} - <button type="submit" name="delete_source" value="{{ source }}">Deletar</button></li>
-            {% endfor %}
-        </ul>
-    </form>
-
-    
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="source" placeholder="fonte">
-        <button type="submit">Adicionar Fonte</button>
-    </form>
-
-    <h2>Termos</h2>
-    <style type="text/css">
-            .tg  {border-collapse:collapse;border-spacing:0;}
-            .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-            .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-            .tg .tg-baqh{text-align:center;vertical-align:top}
-            .tg .tg-0lax{text-align:left;vertical-align:top}
-            /* Tooltip container */
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-            }
-
-            /* Tooltip text */
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 120px;
-                background-color: black;
-                color: #fff;
-                text-align: center;
-                padding: 5px 0;
-                border-radius: 6px;
-            
-                /* Position the tooltip text - see examples below! */
-                position: absolute;
-                z-index: 1;
-            }
-
-            /* Show the tooltip text when you mouse over the tooltip container */
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-            }
-    </style>
-        <table class="tg">
-            <tr>
-                <th class="tg-baqh">Termo</th>
-                <th class="tg-baqh">Sinônimos</th>
-                <th class="tg-baqh">Score<br>Tecnologia</th>
-                <th class="tg-baqh">Score<br>Politico</th>
-                <th class="tg-baqh">Score<br>Economico</th>
-                <th class="tg-baqh">Score<br>Disseminação</th>
-                <th class="tg-baqh">Score<br>Impacto</th>
-                <th class="tg-baqh">Score<br>Seriedade</th>
-                <th class="tg-baqh">Score<br>Interesse</th>
-                <th class="tg-0lax"></th>
-            </tr>
-            <form action="" method="POST">
+<body class="w3-theme-light">
+        <div class="w3-container w3-text-theme">
+            <h2>Chave da API</h2>
+        </div>
+        <form action="" method="POST" class="w3-container w3-row">
             {% csrf_token %}
-            {% for key, value in terms.items %}
-            <tr>
-            <td class="tg-0lax">{{ key }}</td>
-            {% for v in value %}
-                <td class="tg-0lax">
-                {{v}}
-                </td>
-            {% endfor %}
-            <td class="tg-0lax"> <button type="submit" name="delete_term" value="{{ key }}">Deletar</button> </td>
+                <input type="text" name="api" placeholder="{{ key }}" style="width:25%;margin-right: 0%;height: 2.5em;">
+
+                <button type="submit" class="w3-btn w3-theme-dark" style="margin:0%; height: 2.5em;">Atualizar Chave</button>
+        </form>
+    </div>
+
+    <h2 class="w3-container w3-text-theme">Fontes</h2>
+    <div class="w3-container w3-card-2 w3-margin w3-white" style="width:50%;">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <ul class="w3-ul">
+                {% for source in sources %}
+                <li class="w3-large w3-row w3-hover-theme ">
+                    <div class="w3-third">
+                        {{ source }} 
+                    </div>
+                    <div class="w3-right-align ">
+                        <button class="w3-btn" type="submit" name="delete_source" value="{{ source }}">
+                            <i class="material-icons" style="font-size: 1.5em; color:red">delete</i></button>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </form>
+        
+        <form action="" method="post" class="w3-container">
+            {% csrf_token %}
+            <div class="w3-row">
+                <div class="w3-half">
+                    <input type="text" name="source" placeholder="Nova fonte" style="height:2.5em;">
+                </div>
+                <div class="w3-right-align">
+                    <button type="submit" class="w3-btn w3-theme-dark">Adicionar Fonte</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h2 class="w3-container w3-text-theme">Termos</h2>
+        <table class="w3-table w3-striped w3-card-2 w3-margin" style="width: 80%;">
+            <tr class="w3-theme w3-large">
+                <th class="">Termo</th>
+                <th class="">Sinônimos</th>
+                <th class="">Score<br>Tecnologia</th>
+                <th class="">Score<br>Politico</th>
+                <th class="">Score<br>Economico</th>
+                <th class="">Score<br>Disseminação</th>
+                <th class="">Score<br>Impacto</th>
+                <th class="">Score<br>Seriedade</th>
+                <th class="">Score<br>Interesse</th>
+                <th class=""></th>
             </tr>
-            {% endfor %}
+            <form action="" method="POST" class="w3-container">
+                {% csrf_token %}
+                {% for key, value in terms.items %}
+                <tr>
+                    <td class="tg-0lax">{{ key }}</td>
+                    {% for v in value %}
+                    <td class="tg-0lax">
+                        {{v}}
+                    </td>
+                    {% endfor %}
+                    <td>
+                        <button class="w3-btn" type="submit" name="delete_term" value="{{ key }}">
+                            <i class="material-icons" style="font-size: 1.5em; color:red">delete</i></button>
+                    </td>
+                </tr>
+                {% endfor %}
             </form>
-            <form action="" method="post">
-            {% csrf_token %}
-            <tr>
-            <td class="tg-0lax"> <input type="text" name="term" placeholder="termo"> </td>
-            <td class="tg-0lax"> 
-                <textarea name="sinonimo" placeholder="sinonimos separados por ENTER"></textarea>
-            </td>
-            <td class="tg-0lax"> <input type="number" min="0" max="5" name="tech" value="0"></td>
-            <td class="tg-0lax"> <input type="number" min="0" max="5" name="politics" value="0"></td>
-            <td class="tg-0lax"> <input type="number" min="0" max="5" name="economics"value="0"></td>
-            <td class="tg-0lax"> <input type="number" min="0" max="5" name="dissemination" value="0"></td>
-            <td class="tg-0lax"> <input type="number" min="0" max="5" name="impact" value="0"></td>
-            <td class="tg-0lax"> <input type="number" min="0" max="5" name="severity" value="0"></td>
-            <td class="tg-0lax"> <input type="number" min="0" max="5" name="current" value="0"></td>
-            <td class="tg-0lax"><button type="submit">Adicionar Termo</button></td>
-            </tr>
+            <form action="" method="post" class="w3-container">
+                {% csrf_token %}
+                <tr>
+                    <td class="tg-0lax"> <input type="text" name="term" placeholder="termo"> </td>
+                    <td class="tg-0lax"> 
+                        <textarea name="sinonimo" placeholder="sinonimos separados por ENTER"></textarea>
+                    </td>
+                    <td class="tg-0lax"> <input type="number" min="0" max="5" name="tech" value="0"></td>
+                    <td class="tg-0lax"> <input type="number" min="0" max="5" name="politics" value="0"></td>
+                    <td class="tg-0lax"> <input type="number" min="0" max="5" name="economics"value="0"></td>
+                    <td class="tg-0lax"> <input type="number" min="0" max="5" name="dissemination" value="0"></td>
+                    <td class="tg-0lax"> <input type="number" min="0" max="5" name="impact" value="0"></td>
+                    <td class="tg-0lax"> <input type="number" min="0" max="5" name="severity" value="0"></td>
+                    <td class="tg-0lax"> <input type="number" min="0" max="5" name="current" value="0"></td>
+                    <td ><button type="submit" class="w3-btn w3-theme-dark">Adicionar Termo</button></td>
+                </tr>
             </form>
         </table>     
         
     <br>
-   
-    <button onclick="location.href = '{% url 'url_index' %}' ">Voltar</button>
+     
+    <div class="w3-container">
+        <button onclick="location.href = '{% url 'url_index' %}' " class="w3-btn w3-theme w3-round w3-margin">Voltar</button>
+    </div>
 </body>
 </html>
