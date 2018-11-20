@@ -81,7 +81,7 @@ def result(request):
     # News sorted by score
     results = sorted(results, reverse = True)
     # Save News temporarily to await selection
-    pickle.dump(results, open(os.path.join('interface', 'tmp', 'latest_news.bin'), 'wb'))
+    pickle.dump(results, open(os.path.join('interface', 'src', 'bins', 'latest_news.bin'), 'wb'))
     
     return render(request, 'results.html', {'size':size, 'results':results})
 

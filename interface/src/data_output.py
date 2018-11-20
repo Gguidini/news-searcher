@@ -13,6 +13,7 @@ import os # multiplatform integration - paths
 from pathlib import Path  # multiplatform integration - paths
 import requests  # Picture recover from url
 
+from bs4 import BeautifulSoup # Extract icon url
 from docx import Document  # Accessing and creating documents
 from docx.enum.style import WD_STYLE_TYPE  # style types
 from docx.enum.text import WD_ALIGN_PARAGRAPH  # paragraph alignment
@@ -50,6 +51,19 @@ def img_from_url(url : str):
     # Create the picture
     binary_img = io.BytesIO(response.content)  
     return binary_img
+
+def icon_from_url(url : str):
+    """
+    Returns the url to the icon of a webpage.
+    Icon will later be added to the docx table.
+    """
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, features='lxml')
+    for string in ['icon', 'Icon', 'ICON', 'shortcut icon']: # soup is case sensitive
+        icon_link = soup.find("link", rel=string)
+        if icon_link != None:
+            return icon_link['href']
+    return None
 
 def get_template_table(origin):
     """
@@ -148,7 +162,7 @@ def format_table(table, article):
     art_reg = (article.region if isinstance(article.region, str) else "Região da Notícia")
     art_title = (article.title if isinstance(article.title, str) else "Título da Notícia")
     art_description = (article.description if isinstance(article.description, str) else "Descrição da Notícia")
-    art_url = (article.title if isinstance(article.url, str) else "URL da Noticia")
+    art_url = (article.url if isinstance(article.url, str) else "URL da Noticia")
 
     # Text info
     region.add_run(art_reg, style='regionStyle').bold = True 
@@ -163,8 +177,13 @@ def format_table(table, article):
     except:
         img.add_run("Image not found")
 
-    # thumbnail not working yet
-    thumbnail.add_run('Image not found')
+    # thumbnail is the shortcut icon of the News URL, if any.
+    thumbnail_url = icon_from_url(article.url)
+    if thumbnail_url != None:
+        thumbnail_pic = img_from_url(thumbnail_url)
+        thumbnail.add_run().add_picture(thumbnail_pic, width=Cm(2.5), height=Cm(2.5))
+    else:
+        thumbnail.add_run('Image not found')
 
 def add_centered_img(doc, path, width):
     """
