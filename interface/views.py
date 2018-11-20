@@ -1,12 +1,17 @@
+"""
+This module controls all views for the system.
+Each view has a different function assigned to it.
+"""
 
-import pickle
 import os
+import pickle
+
+from django.shortcuts import render
+
+import interface.src.config as config
 import interface.src.data_output as data_output
 import interface.src.news_handler as news_handler
 import interface.src.score_handler as score_handler
-import interface.src.config as config
-
-from django.shortcuts import render
 from interface.src.config import SOURCES, TERMS
 
 
@@ -72,7 +77,7 @@ def result(request):
     valid_terms = { term: TERMS.get(term) for term in valid_terms }
     # Initialize API Client, of redirect to error page 
     client = news_handler.api_client(API_KEY())
-    if client == None:
+    if client is None:
         return render(request, 'key_error.html', {})
     # List of News and size of response
     results = []
@@ -110,8 +115,8 @@ def output(request):
     valid_news = []
     # Separate only valid news
     for n in all_news:
-        if n.title in valid_results:
-            n.region = request.POST.get('region_{}'.format(n.title))
+        if n.url in valid_results:
+            n.region = request.POST.get('region_{}'.format(n.url))
             valid_news.append(n)
 
     # Connection with database

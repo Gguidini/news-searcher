@@ -118,7 +118,7 @@ def _add_style_(doc, style_name, font_family, font_size, rgb, style_type=WD_STYL
         Whether style is bolded or not.
     """
     obj_styles = doc.styles
-    obj_charstyle = obj_styles._add_style_(style_name, style_type)
+    obj_charstyle = obj_styles.add_style(style_name, style_type)
     obj_font = obj_charstyle.font
     obj_font.size = Pt(font_size)
     obj_font.name = font_family
