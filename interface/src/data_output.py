@@ -10,7 +10,6 @@ import copy  # Table extraction
 import datetime # docx name
 import io  # image from url
 import os # multiplatform integration - paths
-from pathlib import Path  # multiplatform integration - paths
 import requests  # Picture recover from url
 
 from bs4 import BeautifulSoup # Extract icon url
@@ -253,6 +252,6 @@ def create_docx(articles, path_to_output):
     _add_footer_(output)
 
     # Save doc
-    path = Path(path_to_output) / (output_name + '.docx')
+    path = os.path.join(path_to_output + '/' + output_name + '.docx')
     output.save(path)
     return output_name + '.docx'
