@@ -80,18 +80,20 @@ def result(request):
     if client is None:
         return render(request, 'key_error.html', {})
     # List of News and size of response
-    results = []
+    results = {}
     size = 0
     # search for all valid terms in all valid sources
     for term in valid_terms:
         s, r = news_handler.get_query_articles(client, term, valid_sources)
         size += s
-        results += r
+        results[term] = r
+
     # Sort News
-    for n in results:
-        score_handler.score_news(n, valid_terms)
-    # News sorted by score
-    results = sorted(results, reverse = True)
+    for key, item in results.items(): # dictionary of news per term
+        for n in item: # list of news
+            n.disease = key # add term to News
+            score_handler.score_news(n, valid_terms) # score news
+        results[key] = sorted(item, reverse=True) # sort News
     # Save News temporarily to await selection
     pickle.dump(results, open(os.path.join('interface', 'src', 'bins', 'latest_news.bin'), 'wb'))
     
@@ -110,9 +112,12 @@ def output(request):
     """
     Creates the docx document and pushes selected News to database.
     """
-    all_news = pickle.load(open(os.path.join('interface', 'src', 'bins', 'latest_news.bin'), 'rb'))
+    dict_of_news = pickle.load(open(os.path.join('interface', 'src', 'bins', 'latest_news.bin'), 'rb'))
     valid_results = request.POST.getlist('valid_result')
+    all_news = []
     valid_news = []
+    for key, item in dict_of_news.items():
+        all_news += item # throw all news in a single list
     # Separate only valid news
     for n in all_news:
         if n.url in valid_results:
