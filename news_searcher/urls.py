@@ -14,11 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from django.conf.urls.static import static
 from interface import views
+from news_searcher import settings
 
 urlpatterns = [
     path('', views.index, name='url_index'),
     path('settings/', views.settings, name='url_settings'),
     path('results/', views.result, name='url_results'),
     path('output/', views.output, name='url_output')
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # serve media files in development.

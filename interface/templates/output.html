@@ -13,13 +13,14 @@
         <link rel="stylesheet" href="">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
+        <link rel="shortcut icon" href="{% static 'icon.png' %}" type="image/png">
     </head>
     <body class="w3-theme-light">
         <h2 class="w3-container w3-text-theme">Clipping gerado &#9786;</h2>
         <h3 class="w3-container w3-text-theme">Notícias selecionadas: {{size}}</h3>
 
         <div class="w3-container">
-            <button class="w3-btn w3-round w3-theme w3-xlarge"><a href="{% media %}{{file}}" download="{{file}}">Baixar Clipping</a></button>
+            <button class="w3-btn w3-round w3-theme w3-xlarge"><a href="{% url 'url_index' %}media/{{file}}" download="{{file}}">Baixar Clipping</a></button>
         </div>
 
         {% for e in error %}
