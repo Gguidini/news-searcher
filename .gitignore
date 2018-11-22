@@ -114,4 +114,7 @@ dmypy.json
 .pyre/
 
 # vscode
-.vscode/*
+.vscode/
+
+# static from collectstatic
+static/
