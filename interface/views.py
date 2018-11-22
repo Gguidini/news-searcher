@@ -13,7 +13,7 @@ import interface.src.data_output as data_output
 import interface.src.news_handler as news_handler
 import interface.src.score_handler as score_handler
 from interface.src.config import SOURCES, TERMS
-
+from news_searcher.settings import MEDIA_ROOT
 
 def API_KEY():
     """
@@ -136,6 +136,6 @@ def output(request):
     # Remove any previous clipping to avoid cluttering
     clear_tmp_folder()
     # New clipping will be saved in interface/tmp/ with name clipping + today's date
-    out = data_output.create_docx(valid_news, os.path.join('interface', 'static', 'tmp'))
+    out = data_output.create_docx(valid_news, MEDIA_ROOT)
 
     return render(request, 'output.html', {'news':valid_news, 'size':len(valid_news), 'file':out, 'error':errors})
