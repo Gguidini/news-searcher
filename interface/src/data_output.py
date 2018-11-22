@@ -18,6 +18,9 @@ from docx.enum.style import WD_STYLE_TYPE  # style types
 from docx.enum.text import WD_ALIGN_PARAGRAPH  # paragraph alignment
 from docx.shared import Cm, Pt, RGBColor  # Image and font sizes
 
+from interface.src.config import BD_INFO
+BD_URL, BD_PASSWD = BD_INFO()
+
 # News DB Output ==============================
 def push_to_DB(article):
     """
@@ -25,8 +28,7 @@ def push_to_DB(article):
     inserts object in the News data base.
     ps.: database is not part of this system.
     """
-    url = 'https://sala-de-situacao-bd.herokuapp.com/insert'
-    response = requests.get(url, params={'json':article.to_json(), 'key':'baduba'})
+    response = requests.get(BD_URL, params={'json':article.to_json(), 'key':BD_PASSWD})
     return response
 
 # Docx Output =================================

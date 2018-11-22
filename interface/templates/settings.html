@@ -107,6 +107,20 @@
         
     <br>
      
+        <div class="w3-container w3-text-theme">
+            <h2>Informações sobre o Banco de Notícias</h2>
+        </div>
+        <form action="" method="POST" class="w3-container w3-row">
+            {% csrf_token %}
+                <h4 class="w3-text-theme">URL para envio das notícias</h4>
+                <input type="text" name="bd_url" placeholder="{{ bd_url }}" value="{{ bd_url }}" style="width:25%;margin-right: 0%;height: 2.5em;">
+
+                <h4 class="w3-text-theme">Senha para envio de notícias</h4>
+                <input type="text" name="bd_passwd" placeholder="{{ bd_passwd }}" value="{{ bd_passwd }}" style="width:25%;margin-right: 0%;height: 2.5em;">
+
+                <button type="submit" class="w3-btn w3-theme-dark" style="margin:0%; height: 2.5em;">Atualizar Dados do Banco</button>
+        </form>
+
     <div class="w3-container">
         <button onclick="location.href = '{% url 'url_index' %}' " class="w3-btn w3-theme w3-round w3-margin">Voltar</button>
     </div>

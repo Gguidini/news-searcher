@@ -3,7 +3,7 @@ This module defines a few essential constants for the system.
 To use the constants in different modules import the constant you want.
 
 > Exemple
-from config import API_KEY
+from config import SOURCES
 
 DON'T CHANGE THE VALUES IN THIS MODULE UNLESS YOU KNOW WHAT YOU'RE DOING.
 """
@@ -11,9 +11,10 @@ import os
 import pickle # uses pickle to save values
 from news_searcher.settings import BASE_DIR
 
-SOURCES = pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "sources.bin"), "rb"))
+SOURCES = pickle.load(open(os.path.join(BASE_DIR, "interface", "src", "bins", "sources.bin"), "rb"))
 
-TERMS =  pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "rb"))
+TERMS = pickle.load(open(os.path.join(BASE_DIR, "interface", "src", "bins", "terms.bin"), "rb"))
+
 
 # Words of interest and their respective weight value.
 # Weights are ranged from 0 to 5.
@@ -26,7 +27,6 @@ TERMS =  pickle.load(open(os.path.join(BASE_DIR,"interface", "src", "bins", "ter
 #    'dengue' : [[], 0, 0, 0, 1, 1, 3, 3],
 #    'dst' : [['std'], 0, 0, 0, 1, 1, 1, 2]
 #}
-
 
 def updateKey(new_key):
     """
@@ -74,3 +74,16 @@ def removeTerm(term):
     TERMS.pop(str(term))
     pickle.dump(TERMS, open(os.path.join(BASE_DIR,"interface", "src", "bins", "terms.bin"), "wb"))
     return TERMS
+
+def updateBD(url, key):
+    """
+    Updates BD access parameters.
+    """
+    pickle.dump((url, key), open(os.path.join(BASE_DIR, 'interface', 'src', 'bins', 'bd.bin'), 'wb'))
+    return (url, key)
+
+def BD_INFO():
+    """
+    Returns BD_URL and BD_PASSWD
+    """
+    return pickle.load(open(os.path.join(BASE_DIR, 'interface', 'src', 'bins', 'bd.bin'), 'rb'))

@@ -5,6 +5,7 @@ Each view has a different function assigned to it.
 
 import os
 import pickle
+import importlib
 
 from django.shortcuts import render
 
@@ -12,8 +13,10 @@ import interface.src.config as config
 import interface.src.data_output as data_output
 import interface.src.news_handler as news_handler
 import interface.src.score_handler as score_handler
+
 from interface.src.config import SOURCES, TERMS
 from news_searcher.settings import MEDIA_ROOT
+
 
 def API_KEY():
     """
@@ -33,12 +36,13 @@ def index(request):
 
 def settings(request):
     """
-    System settings. 
+    System settings.
     Allows user to change:
         1. API KEY
         2. List of trustworthy sources
         3. List of terms, their weights and synonyms
     """
+
     if request.method == 'POST':
         # faz o update da chave da API
         if 'api' in request.POST:
@@ -64,8 +68,13 @@ def settings(request):
             config.addTerm(term, sinonimos, t, p, e, d, i, s, c)
         # remove um termo do arquivo
         elif 'delete_term' in request.POST:
-            config.removeTerm(request.POST.get("delete_term"))    
-    return render(request, 'settings.html', {'key': API_KEY(), 'sources':SOURCES, 'terms':TERMS})
+            config.removeTerm(request.POST.get("delete_term")) 
+        # atualiza informações do banco de dados
+        elif 'bd_url' in request.POST:
+            config.updateBD(request.POST.get('bd_url'), request.POST.get('bd_passwd'))
+            importlib.reload(config) # Reload information updated
+    (BD_URL, BD_PASSWD) = config.BD_INFO()
+    return render(request, 'settings.html', {'key': API_KEY(), 'sources':SOURCES, 'terms':TERMS,                                      'bd_url':BD_URL, 'bd_passwd':BD_PASSWD})
 
 def result(request):
     """
@@ -128,8 +137,9 @@ def output(request):
     errors = [] # records if news can't go to DB.
     for n in valid_news:
         err = data_output.push_to_DB(n)
-        if err.text == 'Fail':
-            errors.append('ERRO adicionando notícia {}'.format(n.title))
+        print(err.text)
+        if err.text.startswith('Fail'):
+            errors.append('ERRO adicionando notícia: {}'.format(n.title))
 
     if errors == []:
         errors = ['Todas as notícias foram adicionadas ao Banco de Dados!']
