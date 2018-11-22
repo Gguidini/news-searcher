@@ -34,6 +34,9 @@ def push_to_DB(article):
 # template document path
 ORIGIN = os.path.join('interface', 'src', 'assets', 'template.docx')
 
+# base document path
+BASE = os.path.join('interface', 'src', 'assets', 'base.docx')
+
 # colors RGB values
 DARK_GRAY = [0x68, 0x68, 0x68]
 BLACK = [0, 0, 0]
@@ -220,7 +223,7 @@ def create_docx(articles, path_to_output):
     Follows template provided by Sala de Situação.
     """
     output_name = 'Clipping_' + datetime.date.today().strftime('%a_%d%b%Y')
-    output = Document()
+    output = Document(BASE)
 
     # Adds region bars centered
     path = os.path.join('interface', 'src', 'assets')
@@ -252,6 +255,6 @@ def create_docx(articles, path_to_output):
     _add_footer_(output)
 
     # Save doc
-    path = os.path.join(path_to_output + '/' + output_name + '.docx')
+    path = os.path.join(path_to_output,  output_name + '.docx')
     output.save(path)
     return output_name + '.docx'
