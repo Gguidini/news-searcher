@@ -103,7 +103,7 @@ def clear_tmp_folder():
     """
     Delete all .docx files in the tmp directory.
     """
-    tmp = os.path.join('interface', 'static', 'tmp')
+    tmp = MEDIA_ROOT
     for f in os.listdir(tmp):
         if f.endswith('.docx'):
             os.remove(os.path.join(tmp, f))
