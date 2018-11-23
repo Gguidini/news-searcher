@@ -23,4 +23,4 @@ urlpatterns = [
     path('settings/', views.settings, name='url_settings'),
     path('results/', views.result, name='url_results'),
     path('output/', views.output, name='url_output')
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # serve media files in development.
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

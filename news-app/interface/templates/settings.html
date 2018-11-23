@@ -118,10 +118,12 @@
                 <h4 class="w3-text-theme">Senha para envio de notícias</h4>
                 <input type="text" name="bd_passwd" placeholder="{{ bd_passwd }}" value="{{ bd_passwd }}" style="width:25%;margin-right: 0%;height: 2.5em;">
 
+            <div class="w3-container">
                 <button type="submit" class="w3-btn w3-theme-dark" style="margin:0%; height: 2.5em;">Atualizar Dados do Banco</button>
+            </div>
         </form>
 
-    <div class="w3-container">
+    <div class="w3-margin">
         <button onclick="location.href = '{% url 'url_index' %}' " class="w3-btn w3-theme w3-round w3-margin">Voltar</button>
     </div>
 </body>
