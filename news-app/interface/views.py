@@ -110,7 +110,7 @@ def result(request):
 
 def clear_tmp_folder():
     """
-    Delete all .docx files in the tmp directory.
+    Delete all .docx files in the media directory.
     """
     tmp = MEDIA_ROOT
     for f in os.listdir(tmp):

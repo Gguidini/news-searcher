@@ -1,6 +1,6 @@
 """
-This method retrieves news from the internet and parses them as News classes.
-The process for retrieving News uses NewsAPI
+This module retrieves news from the internet and parses them as News classes.
+The process for retrieving News uses NewsAPI.
 """
 
 import json
@@ -17,9 +17,10 @@ DATE_BEFORE = datetime.strftime(datetime.now() - timedelta(2), '%Y-%m-%d')
 # Initialize the API client
 def api_client(api_key : str):
     """
-    Initializes a new api client and returns it, or an error.
+    Initializes a new api client and returns it, or None.
     To detect the error, it performs a test query. If query is successful, returns client,
-    if query fails, returns Error.
+    if query fails, returns None.
+    Query might fail because the key expired, or is invalid.
     """
 
     newsapi = NewsApiClient(api_key=api_key)

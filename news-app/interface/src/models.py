@@ -1,5 +1,5 @@
 """
-This module defines the classes used in the system.
+This module defines the class used in the system.
 """
 
 import json
@@ -73,7 +73,7 @@ class News:
         """
         Creates and returns a News instance from a json object.
         """
-
+        
         return cls(json['source']['name'],
                    json['author'],
                    json['title'],

@@ -1,12 +1,18 @@
 """
-This module defines a few essential constants for the system.
-To use the constants in different modules import the constant you want.
+This module defines a few essential variables for the system.
+To use the configuration variables in different modules import the constant you want.
+
+The value of the variables has to be persistent, therefore we use pickle to keep it alive.
+The pickle files are inside bins/ folder.
+
+Functions in this module change configurations persistently.
 
 > Exemple
 from config import SOURCES
 
 DON'T CHANGE THE VALUES IN THIS MODULE UNLESS YOU KNOW WHAT YOU'RE DOING.
 """
+
 import os
 import pickle # uses pickle to save values
 from news_searcher.settings import BASE_DIR

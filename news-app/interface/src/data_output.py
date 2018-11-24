@@ -1,9 +1,10 @@
 """
-This module integrates the system with other systems and 
+This module integrates the system with other systems and
 parses data to the correct output format.
 
 Selected News from search are pushed to News DB,
 and formatted into a docx document for further editing by hand.
+Extensive use of python-docx library. You might want to get familiarized with it.
 """
 
 import copy  # Table extraction
