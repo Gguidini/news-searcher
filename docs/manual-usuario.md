@@ -71,3 +71,8 @@ Ao final da página de resultados, existe um botão chamado 'Gerar Clipping', co
 Ao ser clicada deverá aguardar um tempo, pois as noticias selecionadas serão enviadas ao banco de dados e será preparada uma prévia do clipping de notícias.
 
 ### Clipping Gerado e Banco Atualizado
+
+
+![](assets/gerado.png)
+
+Agora o clipping foi gerado e pode ser baixado clicando em 'Baixar Clipping'. Além disso, as notícias selecionadas foram adicionadas ao banco de dados de notícias.
