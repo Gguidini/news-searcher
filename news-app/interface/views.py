@@ -137,7 +137,6 @@ def output(request):
     errors = [] # records if news can't go to DB.
     for n in valid_news:
         err = data_output.push_to_DB(n)
-        print(err.text)
         if err.text.startswith('Fail'):
             errors.append('ERRO adicionando notícia: {}'.format(n.title))
 
@@ -146,6 +145,6 @@ def output(request):
     # Remove any previous clipping to avoid cluttering
     clear_tmp_folder()
     # New clipping will be saved in interface/tmp/ with name clipping + today's date
-    out = data_output.create_docx(valid_news, MEDIA_ROOT)
+    out = data_output.create_docx(valid_news, MEDIA_ROOT, request.POST.get('speed'))
 
     return render(request, 'output.html', {'news':valid_news, 'size':len(valid_news), 'file':out, 'error':errors})

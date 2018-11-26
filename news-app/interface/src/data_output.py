@@ -148,7 +148,7 @@ def _change_margins_(doc, margin):
         section.left_margin = Cm(margin)
         section.right_margin = Cm(margin)
 
-def _format_table_(table, article):
+def _format_table_(table, article, speed):
     """
     Populates the table correctly from article.
     Follows table template from ORIGIN document.
@@ -183,12 +183,14 @@ def _format_table_(table, article):
         img.add_run("Image not found")
 
     # thumbnail is the shortcut icon of the News URL, if any.
-    thumbnail_url = _icon_from_url_(article.url)
-    try:
-        thumbnail_pic = _img_from_url_(thumbnail_url)
-        thumbnail.add_run().add_picture(thumbnail_pic, width=Cm(2.5), height=Cm(2.5))
-    except:
-        thumbnail.add_run('Image not found')
+    # and if thumbnails are turned on.
+    if speed == 'slow':
+        thumbnail_url = _icon_from_url_(article.url)
+        try:
+            thumbnail_pic = _img_from_url_(thumbnail_url)
+            thumbnail.add_run().add_picture(thumbnail_pic, width=Cm(2.5), height=Cm(2.5))
+        except:
+            thumbnail.add_run('Image not found')
 
 def _add_centered_img_(doc, path, width):
     """
@@ -220,7 +222,7 @@ def _add_footer_(doc):
         par.bold = True
         par.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-def create_docx(articles, path_to_output):
+def create_docx(articles, path_to_output, speed):
     """
     Creates a docx file with tables for each of the article in articles.
     Follows template provided by Sala de Situação.
@@ -252,7 +254,7 @@ def create_docx(articles, path_to_output):
     # Populate tables
     for idx, article in enumerate(articles):
         table = output.tables[idx]
-        _format_table_(table, article)
+        _format_table_(table, article, speed)
 
     # Footer
     _add_footer_(output)

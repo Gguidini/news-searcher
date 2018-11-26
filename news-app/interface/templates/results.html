@@ -266,7 +266,23 @@
                 {% endfor %} <!-- Dictionary -->
 
             <br>
-            <button type="submit" onclick="confirmSubmit()" class="w3-bar w3-theme w3-btn w3-round w3-large">Gerar Clipping</button>
+            <div class="w3-container w3-row">
+                <div class="w3-half">
+                    <input class="w3-radio" type="radio" name="speed" value="slow" checked>
+                    <label class="w3-large">Clipping <b>com</b> Thumbnails</label>
+                    <p>Selecionando esta opção, o sistema tentará buscar, para cada notícia, as imagens representativas dos sites de onde as notícias vieram (as pequenas images que aparecem na aba do navegador).</p>
+
+                    <p>Esta opção é <b>muito mais demorada</b>, e <b>não há garantias</b> de que todas as imagens serão recuperadas. Porém, ela gera <b>resultados mais completos</b>.</p>
+                </div>
+                <div class="w3-half">
+                    <input class="w3-radio" type="radio" name="speed" value="fast">
+                    <label class="w3-large">Clipping <b>sem</b> Thumbnails</label>
+                    <p>Selecionando esta opção, o sistema não irá buscar as imagens do site das notícias.</p>
+
+                    <p>Esta opção é <b>mais rápida</b>, porém <b>todas</b> as notícias terão um dos campos vazios na tabela do clipping, onde deveria ir a thumbnail da notícia. Você terá que encontrá-las <b>manualmente</b>.</p>
+                </div>
+            </div>
+            <button type="submit" onclick="confirmSubmit()" class="w3-bar w3-theme w3-btn w3-round w3-large w3-margin">Gerar Clipping</button>
         </form>
     <button onclick="location.href = '{% url 'url_index' %}' " class="w3-btn w3-theme w3-round w3-margin">Voltar</button>
 </body>
