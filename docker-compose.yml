@@ -3,7 +3,7 @@ version: '3'
 services:
 
   news-app:
-    build: .
+    image: gguidini/news-searcher:latest
     volumes:
       - static_volume:/usr/src/app/static  # <-- bind the static volume
       - media_volume:/usr/src/app/media  # <-- bind the media volume

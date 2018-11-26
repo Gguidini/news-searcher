@@ -24,7 +24,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'p)tu%=cn+xh=)a&4kjzoti7_vb#3l$thq4*gmwsoj6d795tdyi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*'] # Allows for any host, because we don't know CENTEIAS' one.
 
