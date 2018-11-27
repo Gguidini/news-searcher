@@ -168,13 +168,15 @@ def _format_table_(table, article, speed):
     art_title = (article.title if isinstance(article.title, str) else "Título da Notícia")
     art_description = (article.description if isinstance(article.description, str) else "Descrição da Notícia")
     art_url = (article.url if isinstance(article.url, str) else "URL da Noticia")
+    art_date = ('Data: ' + article.date if isinstance(article.date, str) else datetime.date.today().strftime('%Y/%m/%d'))
 
     # Text info
-    region.add_run(art_reg, style='regionStyle').bold = True 
-    title.add_run(art_title, style='titleStyle').bold = True 
+    region.add_run(art_reg, style='regionStyle').bold = True
+    title.add_run(art_title, style='titleStyle').bold = True
     description.add_run(art_description, style='textStyle')
     url.add_run(art_url, style='urlStyle')
-
+    # Date goes below url
+    table.cell(3, 0).add_paragraph().add_run(art_date, style='urlStyle').bold = True
     # Image info
     try:
         pic = _img_from_url_(article.url_to_image)
