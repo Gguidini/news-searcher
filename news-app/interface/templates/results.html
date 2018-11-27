@@ -17,17 +17,60 @@
         .hidden {
             display: none;
         }
+
+        .float {
+            float: right;
+            position: fixed;
+            right: 2%;
+            bottom: 5%;
+            text-align: right;
+        }
+
     </style>
     <script>
         function showField(id) {
-            f = document.getElementById(id);
-            f.placeholder = "Região da Notícia"
-            f.classList.toggle('hidden')
+            var f = document.getElementById('region_'+id);
+            var c = document.getElementById('clipping_'+id);
+            var label = document.getElementById('label_'+id);
+            f.placeholder = "Região da Notícia";
+            f.classList.toggle('hidden');
+            c.classList.toggle('hidden');
+            label.classList.toggle('hidden');
+            if (c.checked == true){
+                c.checked = false;
+                updateClip('clipping_'+id);
+            }
+
+            // Update floating thingy - BD
+            var idx_db = document.getElementById('bd');
+            var amt = parseInt(idx_db.textContent);
+            if (!f.classList.contains('hidden')){
+                idx_db.innerHTML = (amt+1);
+            }
+            else {
+                idx_db.innerHTML = (amt-1);
+            }
+        }
+
+        function updateClip(id){
+            var c = document.getElementById(id);
+            var idx_clip = document.getElementById('clip');
+            var amt = parseInt(idx_clip.textContent);
+            if (c.checked == true)
+                idx_clip.innerHTML = (amt+1);
+            else
+                idx_clip.innerHTML = (amt-1);
         }
     </script>
 </head>
 <body class="w3-theme-light">
     <h3 class="w3-container w3-text-theme">Notícias Encontradas: {{size}}</h3>
+
+    <div class="w3-container float w3-theme-dark w3-round">
+        <h6><b>Notícias Selecionadas</b></h6>
+        <p>Banco de Dados: <span id="bd">0</span></p>
+        <p>Clipping: <span id="clip">0</span></p>
+    </div>
     <!-- Formulario de seleção das notícias que irão para o clipping -->
     <form action="{% url 'url_output'%}" method="post" class="w3-container">
         {% csrf_token %}
@@ -42,7 +85,7 @@
                 </header>
                 <div class="w3-container w3-white">
                     <div class="w3-row">
-                        <input type="checkbox" name="valid_result" value="{{ result.url|safe }}" onclick="showField('region_{{ result.url|safe }}')" class="w3-check">
+                        <input type="checkbox" name="valid_result" value="{{ result.url|safe }}" onclick="showField('{{ result.url|safe }}')" class="w3-check">
                         <!-- Campo para inserção da região da notícia aparece se a notícia for selecionada -->
                         <select id="region_{{result.url|safe}}" name="region_{{result.url|safe}}" class="hidden w3-select w3-border" style="width:95%;">
                             <option selected="" value="">Selecione o Estado Brasileiro ou o País</option>
@@ -250,6 +293,10 @@
                             <option value="Zâmbia">Zâmbia</option>
                             <option value="Zimbábue">Zimbábue</option>
                         </select>
+                        <div class="w3-row">
+                            <label for="clipping_{{ result.url|safe }}" id="label_{{result.url|safe}}" class="hidden">Adicionar ao clipping </label>
+                            <input type="checkbox" name="valid_clipping" value="{{ result.url|safe }}" id="clipping_{{ result.url|safe }}" onclick="updateClip('clipping_{{ result.url|safe }}')" class="w3-check hidden">
+                        </div>
                     </div>
                     <div class="w3-row w3-margin">
                         <div class="w3-col s4">

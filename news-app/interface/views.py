@@ -145,6 +145,9 @@ def output(request):
     # Remove any previous clipping to avoid cluttering
     clear_tmp_folder()
     # New clipping will be saved in interface/tmp/ with name clipping + today's date
-    out = data_output.create_docx(valid_news, MEDIA_ROOT, request.POST.get('speed'))
+    # only news selected for the clipping will be in clipping.
+    clipping = request.POST.getlist('valid_clipping')
+    clipping_news = [n for n in valid_news if n.url in clipping]
+    out = data_output.create_docx(clipping_news, MEDIA_ROOT, request.POST.get('speed'))
 
-    return render(request, 'output.html', {'news':valid_news, 'size':len(valid_news), 'file':out, 'error':errors})
+    return render(request, 'output.html', {'news':valid_news, 'size':len(valid_news), 'file':out, 'error':errors, 'clip':clipping})
