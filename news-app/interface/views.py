@@ -6,6 +6,7 @@ Each view has a different function assigned to it.
 import os
 import pickle
 import importlib
+import time
 
 from django.shortcuts import render
 
@@ -139,6 +140,10 @@ def output(request):
         err = data_output.push_to_DB(n)
         if err.text.startswith('Fail'):
             errors.append('ERRO adicionando notícia: {}'.format(n.title))
+        time.sleep(0.5) # Quick fix for connection error when sending multiple news
+        # The server would deny access to the news being sent when too many of them were sent in succession.
+        # This fix is a little cooldown time to avoid this.
+        # Probably there's a better way to do this.
 
     if errors == []:
         errors = ['Todas as notícias foram adicionadas ao Banco de Dados!']
